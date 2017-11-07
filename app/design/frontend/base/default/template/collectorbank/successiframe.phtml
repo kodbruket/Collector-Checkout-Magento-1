@@ -1,0 +1,14 @@
+
+	<?php 
+$session = Mage::getSingleton('checkout/session');
+$publicToken = $session->getSuccessPublicToken();
+$language = $session->getLanguage();
+$dataVariant = $session->getDataVariant();
+$src = $session->getSrc();
+?>
+<div class='checkout-iframe'>
+	<script type='text/javascript'>
+		var publicToken = '<?php echo $publicToken;?>';
+	</script>
+	<script id='fixme' data-lang='<?php echo $language;?>' data-token='<?php echo $publicToken;?>' src='<?php echo $src;?>' <?php echo $dataVariant;?>></script>		
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Ecomatic_Collectorbank>
+			<active>true</active>
+			<codePool>local</codePool>
+			<depends>
+				<Mage_Checkout/>
+			</depends>
+		</Ecomatic_Collectorbank>
+	</modules>
+</config>

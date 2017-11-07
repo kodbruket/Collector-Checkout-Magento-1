@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<tabs>
+       <ecomatic translate="label" module="collectorbank">
+           <label>Ecomatic</label>
+           <sort_order>300</sort_order>
+       </ecomatic>
+   </tabs>
+   <sections>
+        <ecomatic_collectorbank translate="label" module="collectorbank">
+            <label>Collector Bank</label>
+            <tab>ecomatic</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>                
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+						<active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <username translate="label">
+                            <label>Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </username>
+						<password_iframe translate="label">
+                            <label>Shared Key</label>
+							<comment><![CDATA[for Iframe]]></comment>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>112</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </password_iframe>
+						<store_id_b2c>
+                            <label>B2C Storeid</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>114</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </store_id_b2c>
+						<store_id_b2b>
+                            <label>B2B Storeid</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>115</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </store_id_b2b>
+                        <sandbox_mode>
+                            <label>Test mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sandbox_mode>
+						<terms_url translate="label">
+							<label>Terms URL</label>
+							<comment><![CDATA[Absolute path to your webshops terms]]></comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>155</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</terms_url>
+						<show_newsletter translate="label">
+							<label>Show newsletter subscription</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>170</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</show_newsletter>
+						<pending_order_status translate="label">
+                            <label>OnHold order status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>collectorbank/source_pendingorderstatus</source_model>
+                            <sort_order>400</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Default OnHold]]></comment>
+                        </pending_order_status>
+						<authorized_order_status translate="label">
+                            <label>Authorized order status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>collectorbank/source_acceptedorderstatus</source_model>
+                            <sort_order>410</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[New order status after authorization approved.]]></comment>
+                        </authorized_order_status>
+						<denied_order_status translate="label">
+                            <label>Denied order status</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>collectorbank/source_deniedorderstatus</source_model>
+                            <sort_order>420</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </denied_order_status>
+                        <customer_type translate="label comment">
+                            <label>Customer types</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>collectorbank/source_customertype</source_model>
+                            <sort_order>500</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_type>
+                    </fields>
+                </general>
+                <invoice translate="label">
+                    <label>Invoice Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <invoice_fee>
+                            <label>Invoice Fee</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_fee>
+                        <invoice_fee_tax_class translate="label">
+                            <label>Invoice Fee Tax Class</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_shipping_taxclass</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_fee_tax_class>
+                        <invoice_fee_company>
+                            <label>Invoice Fee for business customers</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_fee_company>
+                        <invoice_fee_company_tax_class translate="label">
+                            <label>Invoice Fee Tax Class for business customers</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_shipping_taxclass</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_fee_company_tax_class>
+                    </fields>
+                </invoice>
+            </groups>
+        </ecomatic_collectorbank>
+    </sections>
+</config>

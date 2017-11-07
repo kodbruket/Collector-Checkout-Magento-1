@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Ecomatic_Ajax>
+      <version>0.1.0</version>
+    </Ecomatic_Ajax>
+  </modules>
+  <frontend>
+    <routers>
+      <ajax>
+        <use>standard</use>
+          <args>
+            <module>Ecomatic_Ajax</module>
+            <frontName>ajax</frontName>
+          </args>
+      </ajax>
+	  
+		<checkout >
+			 <args>
+				  <modules>
+					<Ecomatic_Ajax before="Mage_Checkout" >Ecomatic_Ajax</Ecomatic_Ajax>
+				  </modules>
+			</args>
+		</checkout>
+    </routers>
+		<layout>
+		  <updates>
+			<ajax>
+			  <file>collectorbank_ajax.xml</file>
+			</ajax>
+		  </updates>
+		</layout>
+  </frontend>
+  <global>
+    <helpers>
+      <ajax>
+        <class>Ecomatic_Ajax_Helper</class>
+      </ajax>
+    </helpers>
+	<blocks>
+	  <ajax>
+		<class>Ecomatic_Ajax_Block</class>
+	  </ajax>
+	</blocks>
+  </global>
+</config> 
