@@ -16,11 +16,20 @@
 		}
 		$address->setCollectShippingrates(true);
 		$cart->save();
-		$first = true;
 	?>
 		
     <?php if (($_shippingRateGroups = $this->getEstimateRates())): ?>
-	
+	<?php 
+		if ($this->getAddressShippingMethod() == ""){
+			foreach ($_shippingRateGroups as $code => $_rates){
+				foreach ($_rates as $_rate) {
+					$address->setShippingMethod($_rate->getCode())->save();
+					$cart->save();
+					break;
+				}
+			}
+		}
+	?>
     <form action="javascript:void(0)" id="co-shipping-method-form" >
         <!-- <dl class="sp-methods">
             <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
@@ -52,7 +61,7 @@
             <?php foreach ($_shippingRateGroups as $code => $_rates): ?>
                 <!-- <div><?php echo $this->escapeHtml($this->getCarrierName($code)) ?></div> -->
                 
-                    <?php foreach ($_rates as $_rate): ?>
+                     <?php foreach ($_rates as $_rate): ?>
 					
                         <div class="sp-methods-row <?php if ($_rate->getErrorMessage()) echo ' error-msg"';?>">
                            <?php if ($_rate->getErrorMessage()): ?>
@@ -61,7 +70,6 @@
 								<label class="carrier-method">
 									<input onclick="estimateUpdate('<?php echo $estimateupdate_url; ?>')" id="estimate_method" name="estimate_method" type="radio" value="<?php echo $this->escapeHtml($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio" />
                                 <span style="padding-top:1px;">
-                                
                                 <?php echo $this->escapeHtml($_rate->getMethodTitle()) ?>
 								
                                 <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
@@ -99,7 +107,10 @@
 				   beforeSend: function() {
 						// Suspend the Checkout, showing a spinner...
 						jQuery('body').addClass('is-suspended');
-						window.collector.checkout.api.suspend();
+						try {
+							window.collector.checkout.api.suspend();
+						}
+						catch(err) {}
 					},
 				   success: function(data)
 					{
