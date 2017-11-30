@@ -54,8 +54,11 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$email = $orderDetails['businessCustomer']['email'];
 			$mobile = $orderDetails['businessCustomer']['mobilePhoneNumber'];
 			$firstName = $orderDetails['businessCustomer']['deliveryAddress']['companyName'];
-			$lastName = $orderDetails['businessCustomer']['referencePerson'];
-			
+			$lastName = $orderDetails['businessCustomer']['deliveryAddress']['companyName'];
+			$street = $orderDetails['businessCustomer']['invoiceAddress']['address'];
+			if ($orderDetails['businessCustomer']['invoiceAddress']['address'] == ''){
+				$street = $orderDetails['businessCustomer']['invoiceAddress']['city'];
+			}
 			
 			$store = Mage::app()->getStore();
 			$website = Mage::app()->getWebsite();
@@ -105,17 +108,16 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 			// Assign Customer To Sales Order Quote
 			$quote->assignCustomer($customer);
-			
-			if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
+			if($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Sverige'){	
 				$scountry_id = "SE";
 			}
-			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
 				$scountry_id = "NO";
 			}
-			if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
+			if($orderDetails['businessCustomer']['billingAddress']['country'] == 'Sverige'){  
 				$bcountry_id = "SE";
 			}
-			else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
+			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
 				$scountry_id = "NO";
 			}
 
@@ -129,7 +131,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				'suffix' => '',
 				'company' => $orderDetails['businessCustomer']['invoiceAddress']['companyName'], 
 				'street' => array(
-					 '0' => $orderDetails['businessCustomer']['invoiceAddress']['address'], // compulsory
+					 '0' => $street, // compulsory
 					 '1' => $orderDetails['businessCustomer']['invoiceAddress']['address2'] // optional
 				 ),
 				'city' => $orderDetails['businessCustomer']['invoiceAddress']['city'],
@@ -151,7 +153,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				'suffix' => '',
 				'company' => $orderDetails['businessCustomer']['deliveryAddress']['companyName'], 
 				'street' => array(
-					 '0' => $orderDetails['businessCustomer']['deliveryAddress']['address'], // compulsory
+					 '0' => $street, // compulsory
 					 '1' => $orderDetails['businessCustomer']['deliveryAddress']['address2'] // optional
 				 ),
 				'city' => $orderDetails['businessCustomer']['deliveryAddress']['city'],
@@ -198,8 +200,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			
 			$colpayment_method = $orderDetails['purchase']['paymentMethod'];
 			$colpayment_details = json_encode($orderDetails['purchase']);
-			
-			
 			// Set payment method for the quote
 			$quote->getPayment()->importData(array('method' => $paymentMethod,'coll_payment_method' => $colpayment_method,'coll_payment_details' => $colpayment_details));
 			
@@ -239,6 +239,9 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 				
 				$session->unsBusinessPrivateId();
+				
+				$session->setData('business_private_id', null);
+				$session->setData('business_public_token', null);
 				$session->unsReference();
 				
 				
@@ -507,9 +510,9 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			}
 			else {
 				$shippingAddressData->setShippingAmount($shippingPrice);
-                                $shippingAddressData->setBaseShippingAmount($shippingPrice);
+				$shippingAddressData->setBaseShippingAmount($shippingPrice);
 			}
-                        $shippingAddressData->setShippingInclTax($shippingPrice);
+			$shippingAddressData->setShippingInclTax($shippingPrice);
 			$shippingAddressData->save();
 
 
@@ -593,6 +596,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 				
 				
+				$order->queueNewOrderEmail(true);
 				
 				
 				
@@ -612,8 +616,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					$order->setState($denied, true);
 					$order->save();
 				}
-				
-				
 				$this->loadLayout();
 				$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 				if ($block){//check if block actually exists					
@@ -695,13 +697,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					$btype = $quote->getData('coll_customer_type');
 					$privId = $quote->getData('coll_purchase_identifier');
 					$resp = $this->getResp($privId, $btype);
-					ob_start();
-					print_r($btype);
-					echo "\n";
-					print_r($privId);
-					echo "\n";
-					print_r($resp);
-					file_put_contents("test", "resp: " . ob_get_clean() . "\n", FILE_APPEND);
 					if ($btype == 'b2b'){
 						$this->createB2BOrder($quote, $resp, $privId, $_GET['OrderNo']);
 					}
@@ -710,7 +705,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					}
 				}
 				else {
-					file_put_contents("test", "no order with id: " . $_GET['OrderNo'] . "\n", FILE_APPEND);
 					$this->loadLayout();
 					$this->renderLayout();
 				}
@@ -741,7 +735,11 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		$email = $orderDetails['businessCustomer']['email'];
 		$mobile = $orderDetails['businessCustomer']['mobilePhoneNumber'];
 		$firstName = $orderDetails['businessCustomer']['deliveryAddress']['companyName'];
-		$lastName = $orderDetails['businessCustomer']['referencePerson'];
+		$lastName = $orderDetails['businessCustomer']['deliveryAddress']['companyName'];
+		$street = $orderDetails['businessCustomer']['invoiceAddress']['address'];
+		if ($orderDetails['businessCustomer']['invoiceAddress']['address'] == ''){
+			$street = $orderDetails['businessCustomer']['invoiceAddress']['city'];
+		}
 		
 		
 		$store = Mage::app()->getStore();
@@ -790,16 +788,16 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			} 
 		}
 		$quote->assignCustomer($customer);
-		if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
+		if($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Sverige'){	
 			$scountry_id = "SE";
 		}
-		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
+		else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
 			$scountry_id = "NO";
 		}
-		if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
+		if($orderDetails['businessCustomer']['billingAddress']['country'] == 'Sverige'){  
 			$bcountry_id = "SE";
 		}
-		else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
+		else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
 			$scountry_id = "NO";
 		}
 		$billingAddress = array(

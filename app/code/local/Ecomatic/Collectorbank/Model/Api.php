@@ -388,10 +388,11 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 			$output = curl_exec($ch);
 			ob_start();
 			var_dump(curl_getinfo($ch));
+			
 			$error = ' Curl error: ' . curl_error($ch);
 			$info = ' Curl Info: ' . ob_get_clean();
 		
-			Mage::log('RESPONSE -->'.$output.$error.$info, null,'cartiframe.log');	
+			Mage::log('RESPONSE -->'.$output.$error.$info.$init.$path."\n", null,'cartiframe.log');	
 			
 			if(curl_error($ch)){
 				Mage::log('ERROR -->'.curl_error($ch), null,'cartiframe.log');	

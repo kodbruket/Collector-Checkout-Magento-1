@@ -200,22 +200,78 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 
     public function capture(Varien_Object $payment, $amount)
     {
-        $helper = Mage::helper('collectorbank');
-        $invoice = Mage::registry('current_invoice');
-        if (!($invoice instanceof Mage_Sales_Model_Order_Invoice)) {
-            Mage::throwException(Mage::helper('collectorbank')->__('Activating invoice failed'));
-        }
+		try {
+			$helper = Mage::helper('collectorbank');
+			$invoice = Mage::registry('current_invoice');
+			$order = $payment->getOrder();
+			if (!($invoice instanceof Mage_Sales_Model_Order_Invoice)) {
+				if ($order->hasInvoices()) {
+					$oInvoiceCollection = $order->getInvoiceCollection();
+					if (count($oInvoiceCollection) == 1){
+						foreach ($oInvoiceCollection as $inv){
+							$invoice = $inv;
+							break;
+						}
+					}
+					else {
+						Mage::throwException(Mage::helper('collectorbank')->__('Activating invoice failed'));
+					}
+				}
+			}
 
-        $transactionId = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_NO);
+			$transactionId = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_NO);
 
-        if (Mage::helper('collectorbank')->isPartial($invoice)) {
-            if ($helper->hasCredit($payment)) {
-                $result['error'] = true;
-                $result['error_message'] = Mage::helper('collectorbank')->__('Orders with gift card, store credit or reward point can not be partial invoiced');
-            }
+			if (Mage::helper('collectorbank')->isPartial($invoice)) {
+				if ($helper->hasCredit($payment)) {
+					$result['error'] = true;
+					$result['error_message'] = Mage::helper('collectorbank')->__('Orders with gift card, store credit or reward point can not be partial invoiced');
+				}
+				else {
+					$additionalData = array('invoice' => $invoice);
+					$request = $helper->getPartActivateRequest($payment, $additionalData);
+					$client = $helper->getSoapClient();
+					$headers = array();
+					$headers['Username'] = $helper->getUsername($payment->getOrder()->getStoreId());
+					$headers['Password'] = $helper->getPassword($payment->getOrder()->getStoreId());
+					$headerList = array();
+					foreach ($headers as $k => $v) {
+						$headerList[] = new SoapHeader($this->ns, $k, $v);
+					}
+					$client->__setSoapHeaders($headerList);
+					try {
+						$response = $client->__soapCall('PartActivateInvoice', array('PartActivateInvoiceRequest' => $request));
+					}
+					catch (Exception $e) {
+						$response = null;
+						$helper->exceptionHandler($e, $client);
+						Mage::throwException(Mage::helper('collectorbank')->__('Activation of invoice failed, please try again.'));
+					}
+					$result = $helper->prepareResponse($response);
+					if (!$result['error']) {
+						$payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
+						if (!$payment->getParentTransactionId() || $transactionId != $payment->getParentTransactionId()) {
+							$payment->setTransactionId($transactionId);
+						}
+
+						Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
+
+						$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_NO, isset($result['new_invoice_no']) ? $result['new_invoice_no'] : '');
+
+						//First invoice, add invoice fee
+						if (!$payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED)) {
+							$invoiceFee = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE);
+							$invoiceFeeTax = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX);
+							$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED, $invoiceFee);
+							$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX_INVOICED, $invoiceFeeTax);
+							$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICE_NO, $transactionId);
+						}
+
+						$payment->save();
+					}
+				}
+			}
 			else {
-                $additionalData = array('invoice' => $invoice);
-                $request = $helper->getPartActivateRequest($payment, $additionalData);
+				$request = $helper->getActivateRequest($payment);
 				$client = $helper->getSoapClient();
 				$headers = array();
 				$headers['Username'] = $helper->getUsername($payment->getOrder()->getStoreId());
@@ -225,8 +281,9 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 					$headerList[] = new SoapHeader($this->ns, $k, $v);
 				}
 				$client->__setSoapHeaders($headerList);
+				$request = array('ActivateInvoiceRequest' => $request);
 				try {
-					$response = $client->__soapCall('PartActivateInvoice', array('PartActivateInvoiceRequest' => $request));
+					$response = $client->__soapCall('ActivateInvoice', $request);
 				}
 				catch (Exception $e) {
 					$response = null;
@@ -234,75 +291,33 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 					Mage::throwException(Mage::helper('collectorbank')->__('Activation of invoice failed, please try again.'));
 				}
 				$result = $helper->prepareResponse($response);
-                if (!$result['error']) {
-                    $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
-                    if (!$payment->getParentTransactionId() || $transactionId != $payment->getParentTransactionId()) {
-                        $payment->setTransactionId($transactionId);
-                    }
+				if (!$result['error']) {
+					$payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
+					if (!$payment->getParentTransactionId() || $transactionId != $payment->getParentTransactionId()) {
+						$payment->setTransactionId($transactionId);
+					}
 
-                    Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
+					Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
+					
+					if (!$payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED)) {
+						$invoiceFee = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE);
+						$invoiceFeeTax = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX);
+						$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED, $invoiceFee);
+						$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX_INVOICED, $invoiceFeeTax);
+						$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICE_NO, $transactionId);
+					}
 
-                    $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_NO, isset($result['new_invoice_no']) ? $result['new_invoice_no'] : '');
-
-                    //First invoice, add invoice fee
-                    if (!$payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED)) {
-                        $invoiceFee = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE);
-                        $invoiceFeeTax = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX);
-                        $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED, $invoiceFee);
-                        $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX_INVOICED, $invoiceFeeTax);
-                        $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICE_NO, $transactionId);
-                    }
-
-                    $payment->save();
-                }
-            }
-        }
-		else {
-            $request = $helper->getActivateRequest($payment);
-			$client = $helper->getSoapClient();
-			$headers = array();
-			$headers['Username'] = $helper->getUsername($payment->getOrder()->getStoreId());
-			$headers['Password'] = $helper->getPassword($payment->getOrder()->getStoreId());
-			$headerList = array();
-			foreach ($headers as $k => $v) {
-				$headerList[] = new SoapHeader($this->ns, $k, $v);
+					$payment->save();
+				}
 			}
-			$client->__setSoapHeaders($headerList);
-			$request = array('ActivateInvoiceRequest' => $request);
-			try {
-				$response = $client->__soapCall('ActivateInvoice', $request);
+
+			if ($result['error']) {
+				Mage::throwException(Mage::helper('collectorbank')->__('Activating invoice failed: %s', $result['error_message']));
 			}
-			catch (Exception $e) {
-				$response = null;
-				$helper->exceptionHandler($e, $client);
-				Mage::throwException(Mage::helper('collectorbank')->__('Activation of invoice failed, please try again.'));
-			}
-			$result = $helper->prepareResponse($response);
-			if (!$result['error']) {
-                $payment->setStatus(Mage_Payment_Model_Method_Abstract::STATUS_APPROVED);
-                if (!$payment->getParentTransactionId() || $transactionId != $payment->getParentTransactionId()) {
-                    $payment->setTransactionId($transactionId);
-                }
 
-                Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
-				
-                if (!$payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED)) {
-                    $invoiceFee = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE);
-                    $invoiceFeeTax = $payment->getAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX);
-                    $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICED, $invoiceFee);
-                    $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_TAX_INVOICED, $invoiceFeeTax);
-                    $payment->setAdditionalInformation(self::COLLECTOR_INVOICE_FEE_INVOICE_NO, $transactionId);
-                }
-
-                $payment->save();
-            }
-        }
-
-        if ($result['error']) {
-            Mage::throwException(Mage::helper('collectorbank')->__('Activating invoice failed: %s', $result['error_message']));
-        }
-
-        return $this;
+			return $this;
+		}
+		catch (Exception $e){}
     }
 
 	public function getTitle(){

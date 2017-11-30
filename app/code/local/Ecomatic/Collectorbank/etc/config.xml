@@ -234,7 +234,7 @@
                 <title>Collector Payment</title>
             </collectorpay> -->
 			<collectorbank_invoice><!-- payment method name-->
-                <active>0</active>
+                <active>1</active>
                 <model>Ecomatic_Collectorbank_Model_Collectorbank_Invoice</model>
                 <payment_action>authorize</payment_action>
                 <collector_logo>black</collector_logo>
@@ -243,7 +243,8 @@
                 <specificcountry>NO,SE</specificcountry>
                 <allow_credit>0</allow_credit>
                 <separate_address>0</separate_address>
-				<shippingmethod>flatrate_flatrate</shippingmethod>
+		<title>Collector Checkout</title>
+		<shippingmethod>flatrate_flatrate</shippingmethod>
             </collectorbank_invoice>
          </payment>
     </default>
