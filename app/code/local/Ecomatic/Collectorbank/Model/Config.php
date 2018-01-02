@@ -116,8 +116,11 @@ class Ecomatic_Collectorbank_Model_Config extends Varien_Object
     }
 	
 	public function getInitializeUrl() 
-	{		
-        return 'https://checkout-api-uat.collector.se';
+	{
+		if (Mage::getStoreConfig('ecomatic_collectorbank/general/sandbox_mode')){
+			return 'https://checkout-api-uat.collector.se';
+		}
+		return 'https://checkout-api.collector.se';
     }
 	
 	public function isLive()
@@ -162,10 +165,4 @@ class Ecomatic_Collectorbank_Model_Config extends Varien_Object
 	{
 		return (bool)$this->getConfigData('additional_checkbox_checked');
 	}
-
-	
-	
-	
-	
-	
 }

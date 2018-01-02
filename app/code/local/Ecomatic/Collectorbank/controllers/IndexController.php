@@ -3,6 +3,30 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	
 	public function indexAction(){
 		$cart = Mage::getSingleton('checkout/cart');
+		/*try {
+			$address = $cart->getQuote()->getShippingAddress();
+			if (is_null($address->getCountryId())){
+				$address->setCountryId('SE');
+				$address->setCity('UMEÅ');
+				$address->setFirstname('FÖRNAMNAKT211');
+				$address->setLastname('EFTERNAMNAKT211');
+				$address->setPostcode('90737');
+				$address->setStreet('GATUADRESSAKT211');
+			}
+			$address->setCollectShippingrates(true);
+			$cart->save();
+			$selectedShipMethod = $address->getShippingMethod();
+			if (empty($selectedShipMethod)){
+				$methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
+				foreach ($methods as $shippingCode => $shippingModel){
+					$address->setShippingMethod($shippingCode)->save();
+					break;
+				}
+			}
+		}
+		catch (Exception $e){
+			file_put_contents("test", $e->getMessage() . "\n", FILE_APPEND);
+		}*/
 		$messages = array();
         foreach ($cart->getQuote()->getMessages() as $message) {
             if ($message) {
@@ -1234,7 +1258,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			} else {
 				$result['code'] = 0;
 				$result['error'] = $data["error"];
-				
 			}			
 			return $result;
 		}

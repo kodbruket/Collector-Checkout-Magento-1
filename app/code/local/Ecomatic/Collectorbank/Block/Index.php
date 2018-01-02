@@ -4,8 +4,12 @@ class Ecomatic_Collectorbank_Block_Index extends Mage_Core_Block_Template {
 
 	public function getIframeSrc(){
 		$session = Mage::getSingleton('checkout/session');
-		$session->setData('src', "https://checkout-uat.collector.se/collector-checkout-loader.js");
-		return "https://checkout-uat.collector.se/collector-checkout-loader.js";
+		if (Mage::getStoreConfig('ecomatic_collectorbank/general/sandbox_mode')){
+			$session->setData('src', "https://checkout-uat.collector.se/collector-checkout-loader.js");
+			return "https://checkout-uat.collector.se/collector-checkout-loader.js";
+		}
+		$session->setData('src', "https://checkout.collector.se/collector-checkout-loader.js");
+		return "https://checkout.collector.se/collector-checkout-loader.js";
 	}
 	
 	public function getTypeData(){

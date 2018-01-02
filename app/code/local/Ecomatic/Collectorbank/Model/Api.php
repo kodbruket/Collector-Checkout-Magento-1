@@ -333,7 +333,8 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 		$address =  $cart->getShippingAddress();
 		$selectedShipMethod = $address->getShippingMethod();
 		
-		
+		$methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
+
 		if(!empty($selectedShipMethod)){
 			
 			$sihpDesc = $address->getShippingDescription()? $address->getShippingDescription() : 'shipping';
