@@ -3,30 +3,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	
 	public function indexAction(){
 		$cart = Mage::getSingleton('checkout/cart');
-		/*try {
-			$address = $cart->getQuote()->getShippingAddress();
-			if (is_null($address->getCountryId())){
-				$address->setCountryId('SE');
-				$address->setCity('UMEÅ');
-				$address->setFirstname('FÖRNAMNAKT211');
-				$address->setLastname('EFTERNAMNAKT211');
-				$address->setPostcode('90737');
-				$address->setStreet('GATUADRESSAKT211');
-			}
-			$address->setCollectShippingrates(true);
-			$cart->save();
-			$selectedShipMethod = $address->getShippingMethod();
-			if (empty($selectedShipMethod)){
-				$methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
-				foreach ($methods as $shippingCode => $shippingModel){
-					$address->setShippingMethod($shippingCode)->save();
-					break;
-				}
-			}
-		}
-		catch (Exception $e){
-			file_put_contents("test", $e->getMessage() . "\n", FILE_APPEND);
-		}*/
 		$messages = array();
         foreach ($cart->getQuote()->getMessages() as $message) {
             if ($message) {
@@ -209,6 +185,10 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 						break;
 					}
 				}
+			}
+			
+			if(empty($shippingMethod)){
+				$shippingMethod = "freeshipping_freeshipping";
 			}
 
 			// Collect shipping rates on quote shipping address data
@@ -494,13 +474,15 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					}
 				}
 			}
+			if(empty($shippingMethod)){
+				$shippingMethod = "freeshipping_freeshipping";
+			}
 			
 			
 			
 			
 			
 			foreach($orderItems as $oitem){
-				//echo "<pre>";print_r($oitem);
 				if(in_array($oitem['id'], $allShippingData)) {
 					$shippingPrice = $oitem['unitPrice'];
 					$shippingTax = $oitem['vat'];
@@ -663,7 +645,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					$result['success'] = false;
 					$result['error'] = true;
 					$result['error_messages'] = $e->getMessage();    
-					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);		
+					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ". Mage::helper('core')->jsonEncode($result) . "\n" . $e->getTraceAsString(), null, $logFileName);		
 					//Mage::app()->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 					$this->loadLayout();
 					$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
@@ -877,6 +859,9 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				break;
 			}
 		}
+		if(empty($shippingMethod)){
+			$shippingMethod = "freeshipping_freeshipping";
+		}
 		$shippingAddressData->setCollectShippingRates(true)->collectShippingRates();
 		$shippingAddressData->setShippingMethod($shippingMethod);
 		$paymentMethod = 'collectorbank_invoice';
@@ -1080,6 +1065,9 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$shippingMethod = $oitem['id'];						
 				break;
 			}
+		}
+		if(empty($shippingMethod)){
+			$shippingMethod = "freeshipping_freeshipping";
 		}
 		foreach($orderItems as $oitem){
 			if(in_array($oitem['id'], $allShippingData)) {

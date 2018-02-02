@@ -334,7 +334,12 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 		$selectedShipMethod = $address->getShippingMethod();
 		
 		$methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
-
+		if(empty($selectedShipMethod)){
+			$selectedShipMethod = "freeshipping_freeshipping";
+			$sihpDesc = "Free Shipping";
+			$sihpInclTaxAmount = 0;
+			$shippingTaxPercent = 0;
+		}
 		if(!empty($selectedShipMethod)){
 			
 			$sihpDesc = $address->getShippingDescription()? $address->getShippingDescription() : 'shipping';
@@ -425,9 +430,11 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 			} else {
 				$result['code'] = 0;
 				$result['error'] = $data["error"];
+				Mage::log('ERROR -->'.$data["error"], null,'cartiframe.log');
 				
 			}
 		} else {
+			Mage::log('ERROR -->'."Please select Shipping Method for Collector Checkout", null,'cartiframe.log');
 			$result['code'] = -1;
 			$result['error'] = "Please select Shipping Method for Collector Checkout";
 		}

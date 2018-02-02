@@ -22,7 +22,6 @@
     <?php if (($_shippingRateGroups = $this->getEstimateRates())): ?>
 	<?php 
 		$shippingAddressMethod = $cart->getQuote()->getShippingAddress()->getShippingMethod();
-		file_put_contents("test", get_class($address) . "\n", FILE_APPEND);
 		if (!$shippingAddressMethod){
 			$found = false;
 			foreach ($_shippingRateGroups as $code => $_rates){
