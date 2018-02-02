@@ -104,11 +104,13 @@
 					   beforeSend: function() {
 							// Suspend the Checkout, showing a spinner...
 							jQuery('body').addClass('is-suspended');
-							window.collector.checkout.api.suspend();
+							try {
+								window.collector.checkout.api.suspend();
+							}
+							catch(err){}
 						},					   
 					   success: function(data)
                        {
-                     
                          jQuery('#ajax_loader'+del_id).hide();
                          jQuery("#overlay").hide();
                          var result = jQuery(data);
@@ -182,7 +184,10 @@
 					   beforeSend: function() {
 							// Suspend the Checkout, showing a spinner...
 							jQuery('body').addClass('is-suspended');
-							window.collector.checkout.api.suspend();
+							try {
+								window.collector.checkout.api.suspend();
+							}
+							catch(err){}
 						},
 					   success: function(data)
                        {
@@ -282,7 +287,10 @@
 											beforeSend: function() {
 												// Suspend the Checkout, showing a spinner...
 												jQuery('body').addClass('is-suspended');
-												window.collector.checkout.api.suspend();
+												try {
+													window.collector.checkout.api.suspend();
+												}
+												catch(err){}
 											},
 											success: function(data){
 												var returndata = data;
@@ -392,7 +400,10 @@
 		beforeSend: function() {
 			// Suspend the Checkout, showing a spinner...
 			jQuery('body').addClass('is-suspended');
-			window.collector.checkout.api.suspend();
+			try {
+				window.collector.checkout.api.suspend();
+			}
+			catch(err){}
 		},
         success:function(data)
         {
@@ -427,7 +438,10 @@
 		beforeSend: function() {
 			// Suspend the Checkout, showing a spinner...
 			jQuery('body').addClass('is-suspended');
-			window.collector.checkout.api.suspend();
+			try {
+				window.collector.checkout.api.suspend();
+			}
+			catch(err){}
 		},
         success: function(data) {
             if(data.cart_content_ajax)
@@ -520,7 +534,10 @@ function qtydecrese(url, item, prev_qty, obj) {
 		beforeSend: function() {
 			// Suspend the Checkout, showing a spinner...
 			jQuery('body').addClass('is-suspended');
-			window.collector.checkout.api.suspend();
+			try {
+				window.collector.checkout.api.suspend();
+			}
+			catch(err){}
 		},
         success: function(data) {
             if(data.cart_content_ajax){

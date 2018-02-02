@@ -119,7 +119,10 @@
 				beforeSend: function() {
 					// Suspend the Checkout, showing a spinner...
 					jQuery('body').addClass('is-suspended');
-					window.collector.checkout.api.suspend();
+					try {
+						window.collector.checkout.api.suspend();
+					}
+					catch(err){}
 				},
 				success:function(data)
 				{
