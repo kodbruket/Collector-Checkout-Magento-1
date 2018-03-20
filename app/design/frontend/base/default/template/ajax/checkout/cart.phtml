@@ -99,16 +99,29 @@
 
 	
 	<script type="text/javascript">
-	  var url_update_shoopingcart = '<?php echo $this->getUrl("checkout/cart/updatePost") ?>';
-	  var url_topcart = "<?php echo $this->getUrl('ajax/ajax/headercart'); ?>";
-	  var image = "<?php echo $this->getSkinUrl('images/collectorbank_ajax/ajax_loader.gif'); ?>";
-	  
-	  
-	jQuery(document).ready(function() {
-		jQuery("#businesstypes a").click(function(e) {
-			e.preventDefault();
-			var ctype = jQuery(this).attr('id');
-		//	showcartloading();
+		var url_update_shoopingcart = '<?php echo $this->getUrl("checkout/cart/updatePost") ?>';
+		var url_topcart = "<?php echo $this->getUrl('ajax/ajax/headercart'); ?>";
+		var image = "<?php echo $this->getSkinUrl('images/collectorbank_ajax/ajax_loader.gif'); ?>";
+
+		var iframeLoaded = false;
+		jQuery(document).ready(function() {
+			<?php if (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 2) { ?>
+			jQuery("#businesstypes a").click(function(e) {
+				e.preventDefault();
+				var ctype = jQuery(this).attr('id');
+				//      showcartloading();
+				setCtype(ctype);
+			});
+			<?php } elseif (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 3) { ?>
+			setCtype('b2b');
+			<?php } else { ?>
+			setCtype('b2c');
+			<?php } ?>
+		});
+		function setCtype(ctype) {
+			if (iframeLoaded) {
+				return;
+			}
 			jQuery.ajax({
 				url:'<?php echo $this->getUrl('ajax/ajax/loadiframe');?>',
 				type:'POST',
@@ -124,10 +137,10 @@
 					}
 					catch(err){}
 				},
-				success:function(data)
-				{
-				  var result = data;
-				    if(data.cart_content_ajax){
+				success:function(data){
+					<?php if (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 2) { ?>
+					var result = data;
+					if(data.cart_content_ajax){
 						jQuery('div.cart').replaceWith(data.cart_content_ajax);
 					}
 					if(data.iframe_ajax){
@@ -147,16 +160,17 @@
 						jQuery("#b2b").removeClass("active");
 						jQuery("#b2c").addClass("active");
 						jQuery("#b2c").removeClass("inactive");
-					}					
+					}
+					<?php } ?>
 				},
 				complete: function() {
 					// ... and finally resume the Checkout after the backend call is completed to update the checkout
 					jQuery('body').removeClass('is-suspended');
 					window.collector.checkout.api.resume();
-				},
+					iframeLoaded = true;
+				}
 			});
-		});		
-	});
+		}
 	</script>
 	
 </div>
