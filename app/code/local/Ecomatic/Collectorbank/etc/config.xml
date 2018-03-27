@@ -240,11 +240,11 @@
                 <collector_logo>black</collector_logo>
                 <order_status>collector</order_status>
                 <allowspecific>1</allowspecific>
-                <specificcountry>NO,SE</specificcountry>
+                <specificcountry>NO,SE,DK,DE,FI</specificcountry>
                 <allow_credit>0</allow_credit>
                 <separate_address>0</separate_address>
-		<title>Collector Checkout</title>
-		<shippingmethod>flatrate_flatrate</shippingmethod>
+				<title>Collector Checkout</title>
+				<shippingmethod>flatrate_flatrate</shippingmethod>
             </collectorbank_invoice>
          </payment>
     </default>

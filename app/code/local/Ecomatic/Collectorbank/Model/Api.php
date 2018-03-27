@@ -306,7 +306,7 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 		$cart = Mage::getSingleton('checkout/session')->getQuote();
 		$currency = $cart->getStoreCurrencyCode();
 		$lang = $array['countryCode'];
-		if (!(($lang == "SE" && $currency == "SEK") || ($lang == "NO" && $currency == "NOK"))){
+		if (!(($lang == "SE" && $currency == "SEK") || ($lang == "NO" && $currency == "NOK") || ($lang == "DE" && $currency == "EUR") || ($lang == "DK" && $currency == "DKK") || ($lang == "FI" && $currency == "EUR"))){
 			return;
 		}
 		

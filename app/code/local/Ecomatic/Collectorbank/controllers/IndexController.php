@@ -114,11 +114,29 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
 				$scountry_id = "NO";
 			}
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Suomi'){
+				$scountry_id = "FI";
+			}
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Deutschland'){
+				$scountry_id = "DE";
+			}
+			else {
+				$scountry_id = $orderDetails['businessCustomer']['countryCode'];
+			}
 			if($orderDetails['businessCustomer']['billingAddress']['country'] == 'Sverige'){  
 				$bcountry_id = "SE";
 			}
 			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
-				$scountry_id = "NO";
+				$bcountry_id = "NO";
+			}
+			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Suomi'){
+				$bcountry_id = "FI";
+			}
+			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Deutschland'){
+				$bcountry_id = "DE";
+			}
+			else {
+				$bcountry_id = $orderDetails['businessCustomer']['countryCode'];
 			}
 
 			
@@ -402,13 +420,30 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
 				$scountry_id = "NO";
 			}
+			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Suomi'){
+				$scountry_id = "FI";
+			}
+			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Deutschland'){
+				$scountry_id = "DE";
+			}
+			else {
+				$scountry_id = $orderDetails['customer']['countryCode'];
+			}
 			if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
 				$bcountry_id = "SE";
 			}
 			else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
 				$scountry_id = "NO";
 			}
-
+			else if ($orderDetails['customer']['billingAddress']['country'] == 'Suomi'){
+				$bcountry_id = "FI";
+			}
+			else if ($orderDetails['customer']['billingAddress']['country'] == 'Deutschland'){
+				$bcountry_id = "DE";
+			}
+			else {
+				$bcountry_id = $orderDetails['customer']['countryCode'];
+			}
 			
 			$billingAddress = array(
 				'customer_address_id' => '',

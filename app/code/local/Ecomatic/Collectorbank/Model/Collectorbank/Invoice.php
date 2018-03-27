@@ -39,6 +39,16 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
     protected $_isInitializeNeeded = false;
     protected $_useCampaign = false;
 	
+	public function validate(){
+         $paymentInfo = $this->getInfoInstance();
+         if ($paymentInfo instanceof Mage_Sales_Model_Order_Payment) {
+             $billingCountry = $paymentInfo->getOrder()->getBillingAddress()->getCountryId();
+         } else {
+             $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
+         }
+         return $this;
+    }
+	
 	protected function validShippingAddress() {
         $isCompany = Mage::helper('collectorbank')->guessCustomerType(Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()) == 'company';
 

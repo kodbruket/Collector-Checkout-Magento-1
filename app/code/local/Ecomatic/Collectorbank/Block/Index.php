@@ -48,6 +48,18 @@ class Ecomatic_Collectorbank_Block_Index extends Mage_Core_Block_Template {
 			$session->setData('language', "sv");
 			return "sv";
 		}
+		else if ($lang == "FI"){
+			$session->setData('language', "fi-FI");
+			return "fi-FI";
+		}
+		else if ($lang == "DK"){
+			$session->setData('language', "en-DK");
+			return "en-DK";
+		}
+		else if ($lang == "DE"){
+			$session->setData('language', "en-DE");
+			return "en-DE";
+		}
 		else {
 			return null;
 		}
