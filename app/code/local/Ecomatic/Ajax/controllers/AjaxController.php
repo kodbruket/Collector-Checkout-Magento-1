@@ -204,7 +204,16 @@ class Ecomatic_Ajax_AjaxController extends Mage_Core_Controller_Front_Action {
 					$collector = $this->getLayout()->getBlock('collectorbank_index')->toHtml();
 					$response['collectorbank_index'] = $collector;
 					
-				} else {	  
+				}
+				else if (Mage::getSingleton('core/design_package')->getPackageName()== "smartwave"){
+					$cart_list = $this->getLayout()->getBlock('cart_content_ajax')->toHtml();
+					$response['cart_content_ajax'] = $cart_list;
+					$mini_cart = $this->getLayout()->getBlock('minicart_head')->toHtml();
+					$this->getLayout()->getBlock('collectorbank_index')->toHtml();
+					$response['min_cart'] = $mini_cart;
+					$response['smart_min_cart'] = $this->getLayout()->getBlock('minicart')->toHtml();
+				}
+				else {	  
      				$cart_list = $this->getLayout()->getBlock('cart_content_ajax')->toHtml();
 					$this->getLayout()->getBlock('collectorbank_index')->toHtml();
 					$response['cart_content_ajax'] = $cart_list;
@@ -278,7 +287,16 @@ class Ecomatic_Ajax_AjaxController extends Mage_Core_Controller_Front_Action {
 					$response['min_cart'] = $mini_cart;
 					$cart_sidebar = $this->getLayout()->getBlock('cart_sidebar')->toHtml();
 					$response['cart_sidebar'] = $cart_sidebar;
-				} else {
+				}
+				else if (Mage::getSingleton('core/design_package')->getPackageName()== "smartwave"){
+					$cart_list = $this->getLayout()->getBlock('cart_content_ajax')->toHtml();
+					$response['cart_content_ajax'] = $cart_list;
+					$mini_cart = $this->getLayout()->getBlock('minicart_head')->toHtml();
+					$this->getLayout()->getBlock('collectorbank_index')->toHtml();
+					$response['min_cart'] = $mini_cart;
+					$response['smart_min_cart'] = $this->getLayout()->getBlock('minicart')->toHtml();
+				}
+				else {
      				$cart_list = $this->getLayout()->getBlock('cart_content_ajax')->toHtml();
 					$this->getLayout()->getBlock('collectorbank_index')->toHtml();
 					$response['cart_content_ajax'] = $cart_list;

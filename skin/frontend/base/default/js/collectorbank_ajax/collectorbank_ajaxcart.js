@@ -454,6 +454,9 @@
             if(data.min_cart){
 				jQuery('.header-minicart').html(data.min_cart);
 			}
+			if (data.smart_min_cart){
+				jQuery('.mini-cart').replaceWith(data.smart_min_cart);
+			}
             if(data.cart_sidebar){
 			 jQuery('.col-right .block-cart').html(data.cart_sidebar);
 		    }
@@ -548,6 +551,9 @@ function qtydecrese(url, item, prev_qty, obj) {
 			}
             if(data.min_cart){
 				jQuery('.header-minicart').html(data.min_cart);
+			}
+			if (data.smart_min_cart){
+				jQuery('.mini-cart').replaceWith(data.smart_min_cart);
 			}
             if(data.cart_sidebar){
 				jQuery('.col-right .block-cart').html(data.cart_sidebar);
