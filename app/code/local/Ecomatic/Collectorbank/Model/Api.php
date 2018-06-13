@@ -36,7 +36,7 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 	
 	
 	public function getTaxByPercent($taxclassid){
-		$store = Mage::app()->getStore('default');
+		$store = Mage::app()->getStore('');
 		$request = Mage::getSingleton('tax/calculation')->getRateRequest(null, null, null, $store);
 		$percent = Mage::getSingleton('tax/calculation')->getRate($request->setProductClassId($taxclassid));
 		return $percent;
