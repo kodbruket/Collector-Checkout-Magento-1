@@ -5,7 +5,7 @@ class Ecomatic_Collectorbank_Model_Observer {
 		// Disable the module itself
 		$moduleName = "Ecomatic_Collectorbank";
 		$nodePath = "modules/".$moduleName."/active";
-		if (Mage::helper('core/data')->isModuleEnabled($moduleName)) {
+		if (!Mage::helper('core/data')->isModuleEnabled($moduleName)) {
 			Mage::getConfig()->setNode($nodePath, 'false', true);
 		}
 	 
