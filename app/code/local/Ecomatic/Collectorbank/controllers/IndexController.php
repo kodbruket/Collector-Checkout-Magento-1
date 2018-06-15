@@ -19,7 +19,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	}
 	
 	/* Redirection URL Action */	
-	public function BsuccessAction() {
+	public function bsuccessAction() {
 		
 		$session = Mage::getSingleton('checkout/session');
 		
@@ -325,7 +325,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	}
 	
 	/* Redirection URL Action */	
-	public function SuccessAction() {
+	public function successAction() {
 		
 		//echo "in b2b";die;
 		$session = Mage::getSingleton('checkout/session');
@@ -709,7 +709,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	}
 	
 	/* Notification URL Action */
-	public function NotificationAction(){
+	public function notificationAction(){
 		if (isset($_GET['OrderNo']) && isset($_GET['InvoiceStatus'])){
 			$order = Mage::getModel('sales/order')->loadByIncrementId($_GET['OrderNo']);
 			if ($order->getId()){

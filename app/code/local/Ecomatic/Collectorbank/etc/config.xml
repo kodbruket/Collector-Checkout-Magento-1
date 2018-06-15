@@ -7,13 +7,6 @@
     </modules>
     <frontend>
         <routers>
-            <collectorbank>
-                <use>standard</use>
-                <args>
-                    <module>Ecomatic_Collectorbank</module>
-                    <frontName>collectorbank</frontName>
-                </args>
-            </collectorbank>
 			<collectorbank>
                 <use>standard</use>
                 <args>

@@ -1,6 +1,6 @@
 <?php
 class Ecomatic_Ajax_IndexController extends Mage_Core_Controller_Front_Action{
-    public function IndexAction() {
+    public function indexAction() {
       
 	  $cart = Mage::getSingleton('checkout/cart');
 		$messages = array();
