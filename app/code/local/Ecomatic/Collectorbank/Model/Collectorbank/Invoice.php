@@ -327,7 +327,9 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 
 			return $this;
 		}
-		catch (Exception $e){}
+		catch (Exception $e){
+			Mage::throwException(Mage::helper('collectorbank')->__('Activating invoice failed: %s', $e->getMessage()));
+		}
     }
 
 	public function getTitle(){

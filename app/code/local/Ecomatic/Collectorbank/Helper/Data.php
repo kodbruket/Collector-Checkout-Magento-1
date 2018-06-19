@@ -85,20 +85,20 @@ class Ecomatic_Collectorbank_Helper_Data extends Mage_Core_Helper_Abstract
 	
 	public function getSoapClient($trace = false, $headers = array()) {
         if ($this->getModuleConfig('general/sandbox_mode')) {
-            $client = new SoapClient("https://ecommercetest.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl", array('trace' => $trace));
+            $client = new SoapClient("https://ecommercetest.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl", array('trace' => $trace, 'location' => 'https://ecommercetest.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl'));
         }
         else {
-            $client = new SoapClient("https://ecommerce.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl", array('trace' => $trace));
+            $client = new SoapClient("https://ecommerce.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl", array('trace' => $trace, 'location' => 'https://ecommerce.collector.se/v3.0/InvoiceServiceV33.svc?singleWsdl'));
         }
         return $client;
     }
 	
 	public function getInformationSoapClient($trace = false, $headers = array()) {
         if ($this->getModuleConfig('general/sandbox_mode')) {
-            $client = new SoapClient("https://ecommercetest.collector.se/v3.0/InformationService.svc?singleWsdl", array('trace' => $trace));
+            $client = new SoapClient("https://ecommercetest.collector.se/v3.0/InformationService.svc?singleWsdl", array('trace' => $trace, 'location' => 'https://ecommercetest.collector.se/v3.0/InformationService.svc?singleWsdl'));
         }
         else {
-            $client = new SoapClient("https://ecommerce.collector.se/v3.0/InformationService.svc?singleWsdl", array('trace' => $trace));
+            $client = new SoapClient("https://ecommerce.collector.se/v3.0/InformationService.svc?singleWsdl", array('trace' => $trace, 'location' => 'https://ecommerce.collector.se/v3.0/InformationService.svc?singleWsdl'));
         }
         return $client;
     }
