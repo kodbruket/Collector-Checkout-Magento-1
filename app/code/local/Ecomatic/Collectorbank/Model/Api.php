@@ -100,7 +100,7 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 				$cartarray[] = $cartt;
 			}
 			else if(array_key_exists('discount',$cart->getTotals())){
-				if ($cart->getTotals()['discount']->getValue() > 0){
+				if ($cart->getTotals()['discount']->getValue() < 0){
 					$cartt["id"] = 'discount';
 					$cartt["description"] = 'Applied discount amount';
 					$cartt["unitPrice"] = $cart->getTotals()['discount']->getValue();
