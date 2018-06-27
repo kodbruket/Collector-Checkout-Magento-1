@@ -364,6 +364,81 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$lastName = $orderDetails['customer']['deliveryAddress']['lastName'];
 			
 			
+			if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
+				$scountry_id = "SE";
+			}
+			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
+				$scountry_id = "NO";
+			}
+			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Suomi'){
+				$scountry_id = "FI";
+			}
+			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Deutschland'){
+				$scountry_id = "DE";
+			}
+			else {
+				$scountry_id = $orderDetails['customer']['countryCode'];
+			}
+			if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
+				$bcountry_id = "SE";
+			}
+			else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
+				$scountry_id = "NO";
+			}
+			else if ($orderDetails['customer']['billingAddress']['country'] == 'Suomi'){
+				$bcountry_id = "FI";
+			}
+			else if ($orderDetails['customer']['billingAddress']['country'] == 'Deutschland'){
+				$bcountry_id = "DE";
+			}
+			else {
+				$bcountry_id = $orderDetails['customer']['countryCode'];
+			}
+			
+			$billingAddress = array(
+				'customer_address_id' => '',
+				'prefix' => '',
+				'firstname' => $firstName,
+				'middlename' => '',
+				'lastname' => $lastName,
+				'suffix' => '',
+				'company' => $orderDetails['customer']['billingAddress']['coAddress'], 
+				'street' => array(
+					 '0' => $orderDetails['customer']['billingAddress']['address'], // compulsory
+					 '1' => $orderDetails['customer']['billingAddress']['address2'] // optional
+				 ),
+				'city' => $orderDetails['customer']['billingAddress']['city'],
+				'country_id' => $bcountry_id, // two letters country code
+				'region' => '', // can be empty '' if no region
+				'region_id' => '', // can be empty '' if no region_id
+				'postcode' => $orderDetails['customer']['billingAddress']['postalCode'],
+				'telephone' => $mobile,
+				'fax' => '',
+				'save_in_address_book' => 1
+			);
+		
+			$shippingAddress = array(
+				'customer_address_id' => '',
+				'prefix' => '',
+				'firstname' => $firstName,
+				'middlename' => '',
+				'lastname' => $lastName,
+				'suffix' => '',
+				'company' => $orderDetails['customer']['deliveryAddress']['coAddress'], 
+				'street' => array(
+					 '0' => $orderDetails['customer']['deliveryAddress']['address'], // compulsory
+					 '1' => $orderDetails['customer']['deliveryAddress']['address2'] // optional
+				 ),
+				'city' => $orderDetails['customer']['deliveryAddress']['city'],
+				'country_id' => $scountry_id, // two letters country code
+				'region' => '', // can be empty '' if no region
+				'region_id' => '', // can be empty '' if no region_id
+				'postcode' => $orderDetails['customer']['deliveryAddress']['postalCode'],
+				'telephone' => $mobile,
+				'fax' => '',
+				'save_in_address_book' => 1
+			);
+			
 			$store = Mage::app()->getStore();
 			$website = Mage::app()->getWebsite();
 			$customer = Mage::getModel('customer/customer')->setWebsiteId($website->getId())->loadByEmail($email);
@@ -414,82 +489,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			// Assign Customer To Sales Order Quote
 			$quote->assignCustomer($customer);
 			
-			if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
-				$scountry_id = "SE";
-			}
-			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
-				$scountry_id = "NO";
-			}
-			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Suomi'){
-				$scountry_id = "FI";
-			}
-			else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Deutschland'){
-				$scountry_id = "DE";
-			}
-			else {
-				$scountry_id = $orderDetails['customer']['countryCode'];
-			}
-			if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
-				$bcountry_id = "SE";
-			}
-			else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
-				$scountry_id = "NO";
-			}
-			else if ($orderDetails['customer']['billingAddress']['country'] == 'Suomi'){
-				$bcountry_id = "FI";
-			}
-			else if ($orderDetails['customer']['billingAddress']['country'] == 'Deutschland'){
-				$bcountry_id = "DE";
-			}
-			else {
-				$bcountry_id = $orderDetails['customer']['countryCode'];
-			}
 			
-			$billingAddress = array(
-				'customer_address_id' => '',
-				'prefix' => '',
-				'firstname' => $firstName,
-				'middlename' => '',
-				'lastname' => $lastName,
-				'suffix' => '',
-				'company' => $orderDetails['customer']['billingAddress']['coAddress'], 
-				'street' => array(
-					 '0' => $orderDetails['customer']['billingAddress']['address'], // compulsory
-					 '1' => $orderDetails['customer']['billingAddress']['address2'] // optional
-				 ),
-				'city' => $orderDetails['customer']['billingAddress']['city'],
-				'country_id' => $scountry_id, // two letters country code
-				'region' => '', // can be empty '' if no region
-				'region_id' => '', // can be empty '' if no region_id
-				'postcode' => $orderDetails['customer']['billingAddress']['postalCode'],
-				'telephone' => $mobile,
-				'fax' => '',
-				'save_in_address_book' => 1
-			);
-		
-			$shippingAddress = array(
-				'customer_address_id' => '',
-				'prefix' => '',
-				'firstname' => $firstName,
-				'middlename' => '',
-				'lastname' => $lastName,
-				'suffix' => '',
-				'company' => $orderDetails['customer']['deliveryAddress']['coAddress'], 
-				'street' => array(
-					 '0' => $orderDetails['customer']['deliveryAddress']['address'], // compulsory
-					 '1' => $orderDetails['customer']['deliveryAddress']['address2'] // optional
-				 ),
-				'city' => $orderDetails['customer']['deliveryAddress']['city'],
-				'country_id' => $scountry_id, // two letters country code
-				'region' => '', // can be empty '' if no region
-				'region_id' => '', // can be empty '' if no region_id
-				'postcode' => $orderDetails['customer']['deliveryAddress']['postalCode'],
-				'telephone' => $mobile,
-				'fax' => '',
-				'save_in_address_book' => 1
-			);
-		
-		
 			// Add billing address to quote
 			$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		 
@@ -515,8 +515,8 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			
 			
 			
-			
-			
+			$shippingPrice = 0;
+			$shippingTax = 0;
 			foreach($orderItems as $oitem){
 				if(in_array($oitem['id'], $allShippingData)) {
 					$shippingPrice = $oitem['unitPrice'];
@@ -536,7 +536,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			
 			
 			$shippingAddressData->setShippingAmount($shippingPrice);
-                        $shippingAddressData->setBaseShippingAmount($shippingPrice);
+			$shippingAddressData->setBaseShippingAmount($shippingPrice);
 			
 			
 			// Collect shipping rates on quote shipping address data
@@ -561,9 +561,11 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			//$paymentMethod = 'collectorpay';
 			$paymentMethod = 'collectorbank_invoice';
 			// Set shipping and payment method on quote shipping address data
-			$shippingAddressData->setPaymentMethod($paymentMethod);			
-
-			$colpayment_method = $orderDetails['purchase']['paymentMethod'];
+			$shippingAddressData->setPaymentMethod($paymentMethod);
+			$colpayment_method = ""; 
+			if (array_key_exists('paymentMethod', $orderDetails['purchase'])){
+				$colpayment_method = $orderDetails['purchase']['paymentMethod'];
+			}
 			$colpayment_details = json_encode($orderDetails['purchase']);
 
 			// Set payment method for the quote
@@ -676,7 +678,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$this->renderLayout();			
 				
 				
-			} catch (Mage_Core_Exception $e) {
+			} catch (Exception $e) {
 					$result['success'] = false;
 					$result['error'] = true;
 					$result['error_messages'] = $e->getMessage();    
@@ -691,7 +693,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 							$block->setCode(222);
 						}
 					}
-					$this->renderLayout();					
+					$this->renderLayout();
 			} 			
 		} 
 		
@@ -711,6 +713,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 	/* Notification URL Action */
 	public function notificationAction(){
 		if (isset($_GET['OrderNo']) && isset($_GET['InvoiceStatus'])){
+			sleep(60);
 			$order = Mage::getModel('sales/order')->loadByIncrementId($_GET['OrderNo']);
 			if ($order->getId()){
 				if ($_GET['InvoiceStatus'] == "0"){
@@ -751,6 +754,28 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				}
 			}
 		}
+		if (isset($_GET['OrderNo']) && !isset($_GET['InvoiceStatus'])){
+			sleep(20);
+			$order = Mage::getModel('sales/order')->loadByIncrementId($_GET['OrderNo']);
+            if (!$order->getId()){
+				$quote = Mage::getModel('sales/quote')->getCollection()->addFieldToFilter('reserved_order_id', $_GET['OrderNo'])->getFirstItem();
+				if ($quote->getId()) {
+					$btype = $quote->getData('coll_customer_type');
+					$privId = $quote->getData('coll_purchase_identifier');
+					$resp = $this->getResp($privId, $btype);
+					if ($btype == 'b2b'){
+						$this->createB2BOrder($quote, $resp, $privId, $_GET['OrderNo']);
+					}
+					else {
+						$this->createB2COrder($quote, $resp, $privId, $_GET['OrderNo']);
+					}
+				}
+				else {
+					$this->loadLayout();
+					$this->renderLayout();
+				}
+            }
+        }
 	}
 	
 	public function createB2BOrder($quote, $orderData, $privateId, $orderId){
@@ -952,11 +977,11 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
 			$this->renderLayout();
 		} 
-		catch (Mage_Core_Exception $e) {
+		catch (Exception $e) {
 			$result['success'] = false;
 			$result['error'] = true;
 			$result['error_messages'] = $e->getMessage();    
-			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);		
+			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);
 			$this->loadLayout();
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){
@@ -989,8 +1014,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		else {
 			$session->setData('use_fee', 5);
 		}
-		
-		Mage::log('1', null, $logFileName);	
 	
 		$email = $orderDetails['customer']['email'];
 		$mobile = $orderDetails['customer']['mobilePhoneNumber'];
@@ -1069,7 +1092,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			'fax' => '',
 			'save_in_address_book' => 1
 		);
-	Mage::log('2', null, $logFileName);	
 		$shippingAddress = array(
 			'customer_address_id' => '',
 			'prefix' => '',
@@ -1111,7 +1133,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				break;
 			}
 		}
-	Mage::log('3', null, $logFileName);	
 		$shippingAddressData->setShippingAmount($shippingPrice);
 		$shippingAddressData->setBaseShippingAmount($shippingPrice);
 		$shippingAddressData->setCollectShippingRates(true)->collectShippingRates();
@@ -1132,7 +1153,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		$colpayment_details = json_encode($orderDetails['purchase']);
 		$quote->getPayment()->importData(array('method' => $paymentMethod,'coll_payment_method' => $colpayment_method,'coll_payment_details' => $colpayment_details));
 		try{
-	Mage::log('4', null, $logFileName);	
 			$orderReservedId = $orderId;
 			$quote->setResponse($orderDetails);
 			$quote->setCollCustomerType($orderDetails['customerType']);
@@ -1211,14 +1231,12 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			}
 			Mage::dispatchEvent('checkout_onepage_controller_success_action', array('order_ids' => array($order->getId())));
 			$this->renderLayout();
-			
-	Mage::log('5', null, $logFileName);	
 		} 
-		catch (Mage_Core_Exception $e) {
+		catch (Exception $e) {
 			$result['success'] = false;
 			$result['error'] = true;
 			$result['error_messages'] = $e->getMessage();    
-			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);
+			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);
 			$this->loadLayout();
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){

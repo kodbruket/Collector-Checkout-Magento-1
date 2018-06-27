@@ -28,9 +28,9 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 	}
 	
 	
-	public function getNotificationUri(){
+	public function getNotificationUri($nextOrderId){
 		$getBaseUrl = Mage::getUrl();
-		$notifyUrl = $getBaseUrl."collectorcheckout/index/notification";
+		$notifyUrl = $getBaseUrl."collectorcheckout/index/notification?OrderNo=".$nextOrderId;
 		return $notifyUrl;
 	}
 	
@@ -328,7 +328,7 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 			$array['redirectPageUri'] = $this->getRedirectPageUri();
 		}
 		$array['merchantTermsUri'] = $this->getMerchantTermsUri();
-		$array['notificationUri'] = $this->getNotificationUri();
+		$array['notificationUri'] = $this->getNotificationUri($nextOrderId);
 		
 		$address =  $cart->getShippingAddress();
 		$selectedShipMethod = $address->getShippingMethod();

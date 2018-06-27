@@ -161,9 +161,10 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 				$quote = $session->getQuote();
 				$response = $quote->getResponse();
 				
-				
-				
-				$colpayment_method = $response['purchase']['paymentMethod'];
+				$colpayment_method = ""; 
+				if (array_key_exists('paymentMethod', $response['purchase'])){
+					$colpayment_method = $response['purchase']['paymentMethod'];
+				}
 				$colpayment_details = json_encode($response['purchase']);
 				$payment->setCollPaymentMethod($colpayment_method);
 				$payment->setCollPaymentDetails($colpayment_details );
@@ -262,8 +263,9 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
 						if (!$payment->getParentTransactionId() || $transactionId != $payment->getParentTransactionId()) {
 							$payment->setTransactionId($transactionId);
 						}
-
-						Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
+						if (array_key_exists('invoice_url', $result)){
+							Mage::getSingleton('adminhtml/session')->setData('collector_invoice_url', $result['invoice_url']);
+						}
 
 						$payment->setAdditionalInformation(self::COLLECTOR_INVOICE_NO, isset($result['new_invoice_no']) ? $result['new_invoice_no'] : '');
 
