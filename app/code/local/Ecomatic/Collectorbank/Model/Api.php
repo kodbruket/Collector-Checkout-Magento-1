@@ -64,7 +64,7 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
                 }
 				$_product = Mage::getModel('catalog/product')->load($item->getProductId());
 				//$cartt["id"] = $item->getProductId();
-				$cartt["id"] = $item->getSku();
+				$cartt["id"] = $item->getId().'/'.$item->getSku();
 				$cartt["description"] = $item->getName();
 				if ($item->getParentItemId() && $item->getPriceInclTax() == 0) {
 					$cartt["unitPrice"] = round($item->getParentItem()->getPriceInclTax(),2);

@@ -186,7 +186,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			//check for selected shipping method
 			$shippingMethod = $session->getSelectedShippingmethod();
 			if(empty($shippingMethod)){
-				$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
+				$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods($quote);
 				$orderItems = $orderDetails['order']['items'];
 				foreach($orderItems as $oitem){
 					//echo "<pre>";print_r($oitem);
@@ -482,7 +482,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			
 			//check for selected shipping method
 			$shippingMethod = $session->getSelectedShippingmethod();
-			$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
+			$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods($quote);
 			$orderItems = $orderDetails['order']['items'];
 			if(empty($shippingMethod)){
 				foreach($orderItems as $oitem){
@@ -909,7 +909,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		
 		$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		$shippingAddressData = $quote->getShippingAddress()->addData($shippingAddress);
-		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
+		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods($quote);
 		$orderItems = $orderDetails['order']['items'];
 		foreach($orderItems as $oitem){
 			if(in_array($oitem['id'], $allShippingData)) {
@@ -1125,7 +1125,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		
 		$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		$shippingAddressData = $quote->getShippingAddress()->addData($shippingAddress);
-		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
+		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods($quote);
 		$orderItems = $orderDetails['order']['items'];
 		foreach($orderItems as $oitem){
 			if(in_array($oitem['id'], $allShippingData)) {

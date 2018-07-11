@@ -40,25 +40,19 @@ class Ecomatic_Collectorbank_Model_Config extends Varien_Object
 		return $this->store;
 	}
 	
-	public function getActiveShppingMethods()
+	public function getActiveShppingMethods($quote)
 	{
-		$methods = Mage::getSingleton('shipping/config')->getActiveCarriers();
+		$rates = $quote->getShippingAddress()->getGroupedAllShippingRates();
+		$ci = 0;
 		$options = array();
-
-		foreach($methods as $_code => $_method)
-		{
-			if ($methods = $_method->getAllowedMethods()){
-				foreach ($methods as $_mcode => $_mname){
-					$code = $_code . '_' . $_mcode;
-					$title = $_mname;
-					$title = $_code;
-					$options[] = $code;
-				}
+		$carriername = array_keys($rates);
+		foreach ($rates as $carrier){
+			foreach ($carrier as $rate){
+				$options[] = $carriername[$ci] . "_" . $rate->getMethod();
 			}
-	
+			$ci = $ci + 1;
 		}
-
-		return $options; // This array will have all the active shipping methods
+		return $options;
 	} 
 	
 	public function getConfigData($key, $default = false)
