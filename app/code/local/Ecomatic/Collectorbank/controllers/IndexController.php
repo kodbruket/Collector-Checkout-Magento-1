@@ -59,7 +59,73 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			if ($orderDetails['businessCustomer']['invoiceAddress']['address'] == ''){
 				$street = $orderDetails['businessCustomer']['invoiceAddress']['city'];
 			}
-			
+			if($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Sverige'){	
+				$scountry_id = "SE";
+			}
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
+				$scountry_id = "NO";
+			}
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Suomi'){
+				$scountry_id = "FI";
+			}
+			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Deutschland'){
+				$scountry_id = "DE";
+			}
+			else {
+				$scountry_id = $orderDetails['businessCustomer']['countryCode'];
+			}
+			if($orderDetails['businessCustomer']['invoiceAddress']['country'] == 'Sverige'){  
+				$bcountry_id = "SE";
+			}
+			else if ($orderDetails['businessCustomer']['invoiceAddress']['country'] == 'Norge'){
+				$bcountry_id = "NO";
+			}
+			else if ($orderDetails['businessCustomer']['invoiceAddress']['country'] == 'Suomi'){
+				$bcountry_id = "FI";
+			}
+			else if ($orderDetails['businessCustomer']['invoiceAddress']['country'] == 'Deutschland'){
+				$bcountry_id = "DE";
+			}
+			else {
+				$bcountry_id = $orderDetails['businessCustomer']['countryCode'];
+			}
+			$billingAddress = array(
+				'customer_address_id' => '',
+				'prefix' => '',
+				'firstname' => $firstName,
+				'middlename' => '',
+				'lastname' => $lastName,
+				'suffix' => '',
+				'company' => $orderDetails['businessCustomer']['invoiceAddress']['companyName'], 
+				'street' => $street,
+				'city' => $orderDetails['businessCustomer']['invoiceAddress']['city'],
+				'country_id' => $bcountry_id, // two letters country code
+				'region' => '', // can be empty '' if no region
+				'region_id' => '', // can be empty '' if no region_id
+				'postcode' => $orderDetails['businessCustomer']['invoiceAddress']['postalCode'],
+				'telephone' => $mobile,
+				'fax' => '',
+				'save_in_address_book' => 1
+			);
+		
+			$shippingAddress = array(
+				'customer_address_id' => '',
+				'prefix' => '',
+				'firstname' => $firstName,
+				'middlename' => '',
+				'lastname' => $lastName,
+				'suffix' => '',
+				'company' => $orderDetails['businessCustomer']['deliveryAddress']['companyName'], 
+				'street' => $street,
+				'city' => $orderDetails['businessCustomer']['deliveryAddress']['city'],
+				'country_id' => $scountry_id, // two letters country code
+				'region' => '', // can be empty '' if no region
+				'region_id' => '', // can be empty '' if no region_id
+				'postcode' => $orderDetails['businessCustomer']['deliveryAddress']['postalCode'],
+				'telephone' => $mobile,
+				'fax' => '',
+				'save_in_address_book' => 1
+			);
 			$store = Mage::app()->getStore();
 			$website = Mage::app()->getWebsite();
 			$customer = Mage::getModel('customer/customer')->setWebsiteId($website->getId())->loadByEmail($email);
@@ -108,81 +174,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 			// Assign Customer To Sales Order Quote
 			$quote->assignCustomer($customer);
-			if($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Sverige'){	
-				$scountry_id = "SE";
-			}
-			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
-				$scountry_id = "NO";
-			}
-			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Suomi'){
-				$scountry_id = "FI";
-			}
-			else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Deutschland'){
-				$scountry_id = "DE";
-			}
-			else {
-				$scountry_id = $orderDetails['businessCustomer']['countryCode'];
-			}
-			if($orderDetails['businessCustomer']['billingAddress']['country'] == 'Sverige'){  
-				$bcountry_id = "SE";
-			}
-			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
-				$bcountry_id = "NO";
-			}
-			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Suomi'){
-				$bcountry_id = "FI";
-			}
-			else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Deutschland'){
-				$bcountry_id = "DE";
-			}
-			else {
-				$bcountry_id = $orderDetails['businessCustomer']['countryCode'];
-			}
-
 			
-			$billingAddress = array(
-				'customer_address_id' => '',
-				'prefix' => '',
-				'firstname' => $firstName,
-				'middlename' => '',
-				'lastname' => $lastName,
-				'suffix' => '',
-				'company' => $orderDetails['businessCustomer']['invoiceAddress']['companyName'], 
-				'street' => array(
-					 '0' => $street, // compulsory
-					 '1' => $orderDetails['businessCustomer']['invoiceAddress']['address2'] // optional
-				 ),
-				'city' => $orderDetails['businessCustomer']['invoiceAddress']['city'],
-				'country_id' => $scountry_id, // two letters country code
-				'region' => '', // can be empty '' if no region
-				'region_id' => '', // can be empty '' if no region_id
-				'postcode' => $orderDetails['businessCustomer']['invoiceAddress']['postalCode'],
-				'telephone' => $mobile,
-				'fax' => '',
-				'save_in_address_book' => 1
-			);
-		
-			$shippingAddress = array(
-				'customer_address_id' => '',
-				'prefix' => '',
-				'firstname' => $firstName,
-				'middlename' => '',
-				'lastname' => $lastName,
-				'suffix' => '',
-				'company' => $orderDetails['businessCustomer']['deliveryAddress']['companyName'], 
-				'street' => array(
-					 '0' => $street, // compulsory
-					 '1' => $orderDetails['businessCustomer']['deliveryAddress']['address2'] // optional
-				 ),
-				'city' => $orderDetails['businessCustomer']['deliveryAddress']['city'],
-				'country_id' => $scountry_id, // two letters country code
-				'region' => '', // can be empty '' if no region
-				'region_id' => '', // can be empty '' if no region_id
-				'postcode' => $orderDetails['businessCustomer']['deliveryAddress']['postalCode'],
-				'telephone' => $mobile,
-				'fax' => '',
-				'save_in_address_book' => 1
-			);
 		
 		
 			// Add billing address to quote
@@ -357,7 +349,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			}
 		
 		
-		if($orderDetails){		
+		if($orderDetails){
 			$email = $orderDetails['customer']['email'];
 			$mobile = $orderDetails['customer']['mobilePhoneNumber'];
 			$firstName = $orderDetails['customer']['deliveryAddress']['firstName'];
@@ -403,10 +395,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				'lastname' => $lastName,
 				'suffix' => '',
 				'company' => $orderDetails['customer']['billingAddress']['coAddress'], 
-				'street' => array(
-					 '0' => $orderDetails['customer']['billingAddress']['address'], // compulsory
-					 '1' => $orderDetails['customer']['billingAddress']['address2'] // optional
-				 ),
+				'street' => $orderDetails['customer']['billingAddress']['address'],
 				'city' => $orderDetails['customer']['billingAddress']['city'],
 				'country_id' => $bcountry_id, // two letters country code
 				'region' => '', // can be empty '' if no region
@@ -425,10 +414,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				'lastname' => $lastName,
 				'suffix' => '',
 				'company' => $orderDetails['customer']['deliveryAddress']['coAddress'], 
-				'street' => array(
-					 '0' => $orderDetails['customer']['deliveryAddress']['address'], // compulsory
-					 '1' => $orderDetails['customer']['deliveryAddress']['address2'] // optional
-				 ),
+				'street' => $orderDetails['customer']['deliveryAddress']['address'],
 				'city' => $orderDetails['customer']['deliveryAddress']['city'],
 				'country_id' => $scountry_id, // two letters country code
 				'region' => '', // can be empty '' if no region
@@ -512,7 +498,9 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			}
 			
 			
-			
+
+
+		
 			$shippingPrice = 0;
 			$shippingTax = 0;
 			foreach($orderItems as $oitem){
@@ -804,7 +792,73 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		if ($orderDetails['businessCustomer']['invoiceAddress']['address'] == ''){
 			$street = $orderDetails['businessCustomer']['invoiceAddress']['city'];
 		}
-		
+		if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
+			$scountry_id = "SE";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
+			$scountry_id = "NO";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Suomi'){
+			$scountry_id = "FI";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Deutschland'){
+			$scountry_id = "DE";
+		}
+		else {
+			$scountry_id = $orderDetails['customer']['countryCode'];
+		}
+		if($orderDetails['customer']['invoiceAddress']['country'] == 'Sverige'){  
+			$bcountry_id = "SE";
+		}
+		else if ($orderDetails['customer']['invoiceAddress']['country'] == 'Norge'){
+			$bcountry_id = "NO";
+		}
+		else if ($orderDetails['customer']['invoiceAddress']['country'] == 'Suomi'){
+			$bcountry_id = "FI";
+		}
+		else if ($orderDetails['customer']['invoiceAddress']['country'] == 'Deutschland'){
+			$bcountry_id = "DE";
+		}
+		else {
+			$bcountry_id = $orderDetails['customer']['countryCode'];
+		}
+		$billingAddress = array(
+			'customer_address_id' => '',
+			'prefix' => '',
+			'firstname' => $firstName,
+			'middlename' => '',
+			'lastname' => $lastName,
+			'suffix' => '',
+			'company' => $orderDetails['businessCustomer']['invoiceAddress']['companyName'], 
+			'street' => $orderDetails['businessCustomer']['invoiceAddress']['address'],
+			'city' => $orderDetails['businessCustomer']['invoiceAddress']['city'],
+			'country_id' => $bcountry_id, // two letters country code
+			'region' => '', // can be empty '' if no region
+			'region_id' => '', // can be empty '' if no region_id
+			'postcode' => $orderDetails['businessCustomer']['invoiceAddress']['postalCode'],
+			'telephone' => $mobile,
+			'fax' => '',
+			'save_in_address_book' => 1
+		);
+	
+		$shippingAddress = array(
+			'customer_address_id' => '',
+			'prefix' => '',
+			'firstname' => $firstName,
+			'middlename' => '',
+			'lastname' => $lastName,
+			'suffix' => '',
+			'company' => $orderDetails['businessCustomer']['deliveryAddress']['companyName'], 
+			'street' => $orderDetails['businessCustomer']['deliveryAddress']['address'],
+			'city' => $orderDetails['businessCustomer']['deliveryAddress']['city'],
+			'country_id' => $scountry_id, // two letters country code
+			'region' => '', // can be empty '' if no region
+			'region_id' => '', // can be empty '' if no region_id
+			'postcode' => $orderDetails['businessCustomer']['deliveryAddress']['postalCode'],
+			'telephone' => $mobile,
+			'fax' => '',
+			'save_in_address_book' => 1
+		);
 		
 		$store = Mage::app()->getStore();
 		$website = Mage::app()->getWebsite();
@@ -852,61 +906,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			} 
 		}
 		$quote->assignCustomer($customer);
-		if($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Sverige'){	
-			$scountry_id = "SE";
-		}
-		else if ($orderDetails['businessCustomer']['deliveryAddress']['country'] == 'Norge'){
-			$scountry_id = "NO";
-		}
-		if($orderDetails['businessCustomer']['billingAddress']['country'] == 'Sverige'){  
-			$bcountry_id = "SE";
-		}
-		else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
-			$bcountry_id = "NO";
-		}
-		$billingAddress = array(
-			'customer_address_id' => '',
-			'prefix' => '',
-			'firstname' => $firstName,
-			'middlename' => '',
-			'lastname' => $lastName,
-			'suffix' => '',
-			'company' => $orderDetails['businessCustomer']['invoiceAddress']['companyName'], 
-			'street' => array(
-				 '0' => $orderDetails['businessCustomer']['invoiceAddress']['address'], // compulsory
-				 '1' => $orderDetails['businessCustomer']['invoiceAddress']['address2'] // optional
-			 ),
-			'city' => $orderDetails['businessCustomer']['invoiceAddress']['city'],
-			'country_id' => $scountry_id, // two letters country code
-			'region' => '', // can be empty '' if no region
-			'region_id' => '', // can be empty '' if no region_id
-			'postcode' => $orderDetails['businessCustomer']['invoiceAddress']['postalCode'],
-			'telephone' => $mobile,
-			'fax' => '',
-			'save_in_address_book' => 1
-		);
-	
-		$shippingAddress = array(
-			'customer_address_id' => '',
-			'prefix' => '',
-			'firstname' => $firstName,
-			'middlename' => '',
-			'lastname' => $lastName,
-			'suffix' => '',
-			'company' => $orderDetails['businessCustomer']['deliveryAddress']['companyName'], 
-			'street' => array(
-				 '0' => $orderDetails['businessCustomer']['deliveryAddress']['address'], // compulsory
-				 '1' => $orderDetails['businessCustomer']['deliveryAddress']['address2'] // optional
-			 ),
-			'city' => $orderDetails['businessCustomer']['deliveryAddress']['city'],
-			'country_id' => $scountry_id, // two letters country code
-			'region' => '', // can be empty '' if no region
-			'region_id' => '', // can be empty '' if no region_id
-			'postcode' => $orderDetails['businessCustomer']['deliveryAddress']['postalCode'],
-			'telephone' => $mobile,
-			'fax' => '',
-			'save_in_address_book' => 1
-		);
+		
 		$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		$shippingAddressData = $quote->getShippingAddress()->addData($shippingAddress);
 		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
@@ -1017,7 +1017,72 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		$mobile = $orderDetails['customer']['mobilePhoneNumber'];
 		$firstName = $orderDetails['customer']['deliveryAddress']['firstName'];
 		$lastName = $orderDetails['customer']['deliveryAddress']['lastName'];
-		
+		if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
+			$scountry_id = "SE";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
+			$scountry_id = "NO";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Suomi'){
+			$scountry_id = "FI";
+		}
+		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Deutschland'){
+			$scountry_id = "DE";
+		}
+		else {
+			$scountry_id = $orderDetails['customer']['countryCode'];
+		}
+		if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
+			$bcountry_id = "SE";
+		}
+		else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
+			$bcountry_id = "NO";
+		}
+		else if ($orderDetails['customer']['billingAddress']['country'] == 'Suomi'){
+			$bcountry_id = "FI";
+		}
+		else if ($orderDetails['customer']['billingAddress']['country'] == 'Deutschland'){
+			$bcountry_id = "DE";
+		}
+		else {
+			$bcountry_id = $orderDetails['customer']['countryCode'];
+		}
+		$billingAddress = array(
+			'customer_address_id' => '',
+			'prefix' => '',
+			'firstname' => $firstName,
+			'middlename' => '',
+			'lastname' => $lastName,
+			'suffix' => '',
+			'company' => $orderDetails['customer']['billingAddress']['coAddress'], 
+			'street' => $orderDetails['customer']['billingAddress']['address'],
+			'city' => $orderDetails['customer']['billingAddress']['city'],
+			'country_id' => $bcountry_id, // two letters country code
+			'region' => '', // can be empty '' if no region
+			'region_id' => '', // can be empty '' if no region_id
+			'postcode' => $orderDetails['customer']['billingAddress']['postalCode'],
+			'telephone' => $mobile,
+			'fax' => '',
+			'save_in_address_book' => 1
+		);
+		$shippingAddress = array(
+			'customer_address_id' => '',
+			'prefix' => '',
+			'firstname' => $firstName,
+			'middlename' => '',
+			'lastname' => $lastName,
+			'suffix' => '',
+			'company' => $orderDetails['customer']['deliveryAddress']['coAddress'], 
+			'street' => $orderDetails['customer']['deliveryAddress']['address'],
+			'city' => $orderDetails['customer']['deliveryAddress']['city'],
+			'country_id' => $scountry_id, // two letters country code
+			'region' => '', // can be empty '' if no region
+			'region_id' => '', // can be empty '' if no region_id
+			'postcode' => $orderDetails['customer']['deliveryAddress']['postalCode'],
+			'telephone' => $mobile,
+			'fax' => '',
+			'save_in_address_book' => 1
+		);
 		
 		$store = Mage::app()->getStore();
 		$website = Mage::app()->getWebsite();
@@ -1057,60 +1122,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		}
 		// Assign Customer To Sales Order Quote
 		$quote->assignCustomer($customer);
-		if($orderDetails['customer']['deliveryAddress']['country'] == 'Sverige'){	
-			$scountry_id = "SE";
-		}
-		else if ($orderDetails['customer']['deliveryAddress']['country'] == 'Norge'){
-			$scountry_id = "NO";
-		}
-		if($orderDetails['customer']['billingAddress']['country'] == 'Sverige'){  
-			$bcountry_id = "SE";
-		}
-		else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
-			$bcountry_id = "NO";
-		}
-		$billingAddress = array(
-			'customer_address_id' => '',
-			'prefix' => '',
-			'firstname' => $firstName,
-			'middlename' => '',
-			'lastname' => $lastName,
-			'suffix' => '',
-			'company' => $orderDetails['customer']['billingAddress']['coAddress'], 
-			'street' => array(
-				 '0' => $orderDetails['customer']['billingAddress']['address'], // compulsory
-				 '1' => $orderDetails['customer']['billingAddress']['address2'] // optional
-			 ),
-			'city' => $orderDetails['customer']['billingAddress']['city'],
-			'country_id' => $scountry_id, // two letters country code
-			'region' => '', // can be empty '' if no region
-			'region_id' => '', // can be empty '' if no region_id
-			'postcode' => $orderDetails['customer']['billingAddress']['postalCode'],
-			'telephone' => $mobile,
-			'fax' => '',
-			'save_in_address_book' => 1
-		);
-		$shippingAddress = array(
-			'customer_address_id' => '',
-			'prefix' => '',
-			'firstname' => $firstName,
-			'middlename' => '',
-			'lastname' => $lastName,
-			'suffix' => '',
-			'company' => $orderDetails['customer']['deliveryAddress']['coAddress'], 
-			'street' => array(
-				 '0' => $orderDetails['customer']['deliveryAddress']['address'], // compulsory
-				 '1' => $orderDetails['customer']['deliveryAddress']['address2'] // optional
-			 ),
-			'city' => $orderDetails['customer']['deliveryAddress']['city'],
-			'country_id' => $scountry_id, // two letters country code
-			'region' => '', // can be empty '' if no region
-			'region_id' => '', // can be empty '' if no region_id
-			'postcode' => $orderDetails['customer']['deliveryAddress']['postalCode'],
-			'telephone' => $mobile,
-			'fax' => '',
-			'save_in_address_book' => 1
-		);
+		
 		$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		$shippingAddressData = $quote->getShippingAddress()->addData($shippingAddress);
 		$allShippingData = Mage::getModel('collectorbank/config')->getActiveShppingMethods();
