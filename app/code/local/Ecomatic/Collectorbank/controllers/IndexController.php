@@ -383,7 +383,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$bcountry_id = "SE";
 			}
 			else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
-				$scountry_id = "NO";
+				$bcountry_id = "NO";
 			}
 			else if ($orderDetails['customer']['billingAddress']['country'] == 'Suomi'){
 				$bcountry_id = "FI";
@@ -487,9 +487,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				}
 				
 			// Assign Customer To Sales Order Quote
-			$quote->assignCustomer($customer);
-			
-			
+			$quote->assignCustomer($customer);			
 			// Add billing address to quote
 			$billingAddressData = $quote->getBillingAddress()->addData($billingAddress);
 		 
@@ -504,7 +502,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				foreach($orderItems as $oitem){
 					//echo "<pre>";print_r($oitem);
 					if(in_array($oitem['id'], $allShippingData)) {
-						$shippingMethod = $oitem['id'];						
+						$shippingMethod = $oitem['id'];
 						break;
 					}
 				}
@@ -588,6 +586,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 			 	// Collect totals of the quote
 				$quote->collectTotals();
+				$quote->getShippingAddress()->save();
 				$quote->save();
 				
 				$service = Mage::getModel('sales/service_quote', $quote);
@@ -614,7 +613,6 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$result['error']   = false;
 				
 				$order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
-				
 				
 				
 				$oldShippingAmount = $order->getShippingAmount();
@@ -864,7 +862,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$bcountry_id = "SE";
 		}
 		else if ($orderDetails['businessCustomer']['billingAddress']['country'] == 'Norge'){
-			$scountry_id = "NO";
+			$bcountry_id = "NO";
 		}
 		$billingAddress = array(
 			'customer_address_id' => '',
@@ -1069,7 +1067,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$bcountry_id = "SE";
 		}
 		else if ($orderDetails['customer']['billingAddress']['country'] == 'Norge'){
-			$scountry_id = "NO";
+			$bcountry_id = "NO";
 		}
 		$billingAddress = array(
 			'customer_address_id' => '',
