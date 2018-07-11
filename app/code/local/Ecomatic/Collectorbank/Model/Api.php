@@ -316,30 +316,6 @@ class Ecomatic_Collectorbank_Model_Api extends Mage_Core_Model_Abstract
 		$session = Mage::getSingleton('checkout/session');
 		$cart = Mage::getModel('checkout/cart')->getQuote();
 		
-		$shippingAddressDefault = array(
-			'customer_address_id' => '',
-			'prefix' => '',
-			'firstname' => 'Approved08',
-			'middlename' => '',
-			'lastname' => 'Sweden08',
-			'suffix' => '',
-			'company' => '', 
-			'street' => array(
-				 '0' => 'MELLANGATAN 2', // compulsory
-				 '1' => '' // optional
-			 ),
-			'city' => 'VARA',
-			'country_id' => 'SE', // two letters country code
-			'region' => '', // can be empty '' if no region
-			'region_id' => '', // can be empty '' if no region_id
-			'postcode' => '53431',
-			'telephone' => '+46123456789',
-			'fax' => '',
-			'save_in_address_book' => 0
-		);
-		$cart->getShippingAddress()->addData($shippingAddressDefault);
-		$cart->getShippingAddress()->save();
-		$cart->save();
 		
 		$cart->reserveOrderId();
 		$nextOrderId = $cart->getReservedOrderId();
