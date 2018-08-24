@@ -1,0 +1,22 @@
+app/code/local/Ecomatic/Ajax                    app/code/local/Ecomatic/Ajax
+app/code/local/Ecomatic/Collectorbank           app/code/local/Ecomatic/Collectorbank
+app/code/local/Ecomatic/Fee                     app/code/local/Ecomatic/Fee
+
+app/design/adminhtml/default/default/layout/collectorbank.xml app/design/adminhtml/default/default/layout/collectorbank.xml
+app/design/adminhtml/default/default/layout/fee.xml app/design/adminhtml/default/default/layout/fee.xml
+app/design/adminhtml/default/default/template/collectorbank app/design/adminhtml/default/default/template/collectorbank
+app/design/adminhtml/default/default/template/fee app/design/adminhtml/default/default/template/fee
+
+app/design/frontend/base/default/layout/collectorbank_ajax.xml app/design/frontend/base/default/layout/collectorbank_ajax.xml 
+app/design/frontend/base/default/layout/collectorbank.xml app/design/frontend/base/default/layout/collectorbank.xml 
+app/design/frontend/base/default/layout/fee.xml app/design/frontend/base/default/layout/fee.xml 
+app/design/frontend/base/default/template/ajax app/design/frontend/base/default/template/ajax
+app/design/frontend/base/default/template/collectorbank app/design/frontend/base/default/template/collectorbank
+app/design/frontend/base/default/template/fee app/design/frontend/base/default/template/fee
+
+app/etc/modules/Ecomatic_Ajax.xml               app/etc/modules/Ecomatic_Ajax.xml
+app/etc/modules/Ecomatic_Collectorbank.xml      app/etc/modules/Ecomatic_Collectorbank.xml
+app/etc/modules/Ecomatic_Fee.xml                app/etc/modules/Ecomatic_Fee.xml
+
+app/locale/nb_NO/Ecomatic_Collectorbank.csv     app/locale/nb_NO/Ecomatic_Collectorbank.csv
+app/locale/sv_SE/Ecomatic_Collectorbank.csv     app/locale/sv_SE/Ecomatic_Collectorbank.csv
