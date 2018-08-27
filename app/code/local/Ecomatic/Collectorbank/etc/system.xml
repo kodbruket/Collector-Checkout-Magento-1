@@ -26,6 +26,7 @@
                     <fields>
 						<active translate="label">
                             <label>Enabled</label>
+                            <comment><![CDATA[When it's enabled <b>Klarna checkout</b> will be automatically disabled.]]></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>1</sort_order>
