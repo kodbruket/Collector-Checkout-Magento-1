@@ -148,7 +148,8 @@
 			<checkout>
                 <rewrite>
                     <onepage_link>Ecomatic_Collectorbank_Block_Checkout_Onepage_Link</onepage_link>
-					<cart_sidebar>Ecomatic_Collectorbank_Block_Checkout_Cart_Sidebar</cart_sidebar>
+                    <!-- This section should commented/uncommented along with collectorbank.xml minicart definition -->
+					<!-- <cart_sidebar>Ecomatic_Collectorbank_Block_Checkout_Cart_Sidebar</cart_sidebar> -->
 				</rewrite>
             </checkout>
             <collectorbank>

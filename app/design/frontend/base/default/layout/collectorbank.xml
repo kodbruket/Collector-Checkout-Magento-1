@@ -127,7 +127,8 @@
 
           
 		</reference>
-		<reference name="header">
+		<!-- This section should commented/uncommented along with Collectorbank config.xml line: `<cart_sidebar>Ecomatic_Collectorbank_Block_Checkout_Cart_Sidebar</cart_sidebar>` -->
+		<!-- <reference name="header">
             <block type="checkout/cart_minicart" name="minicart_head" template="ajax/checkout/cart/minicart.phtml" before="-">
                 <block type="checkout/cart_sidebar" name="minicart_content" template="ajax/checkout/cart/minicart/items.phtml">
                     <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>ajax/checkout/cart/minicart/default.phtml</template></action>
@@ -143,7 +144,7 @@
                     </block>
                 </block>
             </block>
-        </reference>
+        </reference> -->
 		
 		<reference name="before_body_end">
 			<block type="checkout/cart_sidebar" name="cartTop" template="ajax/ajax_topcart.phtml" before="-">

@@ -10,18 +10,19 @@
       <ajax>
         <use>standard</use>
           <args>
-            <module>Ecomatic_Ajax</module>
+            <modules>
+              <Ecomatic_Ajax before="Milou_Ajax">Ecomatic_Ajax</Ecomatic_Ajax>
+            </modules>
             <frontName>ajax</frontName>
           </args>
-      </ajax>
-	  
-		<checkout >
-			 <args>
-				  <modules>
-					<Ecomatic_Ajax before="Mage_Checkout" >Ecomatic_Ajax</Ecomatic_Ajax>
-				  </modules>
-			</args>
-		</checkout>
+      </ajax>	  
+      <checkout>
+        <args>
+          <modules>
+            <Ecomatic_Ajax before="Mage_Checkout">Ecomatic_Ajax</Ecomatic_Ajax>
+          </modules>
+        </args>
+      </checkout>
     </routers>
 		<layout>
 		  <updates>
@@ -39,7 +40,7 @@
     </helpers>
 	<blocks>
 	  <ajax>
-		<class>Ecomatic_Ajax_Block</class>
+		  <class>Ecomatic_Ajax_Block</class>
 	  </ajax>
 	</blocks>
   </global>
