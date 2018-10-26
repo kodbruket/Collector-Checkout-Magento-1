@@ -21,7 +21,7 @@ class Ecomatic_Collectorbank_Model_Observer {
 	
 	/* For selection of shipping method by default on cart */
 	public function handleCollect($observer) {
-		if (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'collectorbank_index_index') {
+		if (Mage::app()->getFrontController()->getAction() && Mage::app()->getFrontController()->getAction()->getFullActionName() == 'collectorbank_index_index') {
 			$quote = $observer->getEvent()->getQuote();
 			$shippingAddress = $quote->getShippingAddress();
 			$saveQuote = false;
