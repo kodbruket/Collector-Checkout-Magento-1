@@ -25,7 +25,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		
 		$logFileName = 'magentoorder.log';
 		
-		Mage::log('----------------- START ------------------------------- ', null, $logFileName);	
+		Mage::log('----------------- START ------------------------------- ', null, $logFileName, true);	
 		
 		$quote = $session->getQuote();
 		$quoteId = $quote->getEntityId();
@@ -163,12 +163,12 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 						$storeId = $customer->getSendemailStoreId();
 						$customer->sendNewAccountEmail('registered', '', $storeId);
 						
-						Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName);
+						Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName, true);
 						
 					} catch (Mage_Core_Exception $e) {						
-						Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName);
+						Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName, true);
 					} catch (Exception $e) {
-						Mage::log('Cannot add customer for  '.$email, null, $logFileName);
+						Mage::log('Cannot add customer for  '.$email, null, $logFileName,true);
 					} 
 				}
 				
@@ -261,7 +261,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				
 				
 				 // Log order created message
-				Mage::log('Order created with increment id: '.$incrementId, null, $logFileName);						
+				Mage::log('Order created with increment id: '.$incrementId, null, $logFileName, true);						
 				$result['success'] = true;
 				$result['error']   = false;
 				
@@ -289,7 +289,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					$result['success'] = false;
 					$result['error'] = true;
 					$result['error_messages'] = $e->getMessage();    
-					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);		
+					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName, true);		
 					$this->loadLayout();
 					$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 					if ($block){
@@ -304,7 +304,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		} 
 		
 		} else {
-			Mage::log('Order is already generated.', null, $logFileName);		
+			Mage::log('Order is already generated.', null, $logFileName, true);		
 			$this->loadLayout();   
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){
@@ -313,7 +313,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$this->renderLayout();
 		}
 
-		Mage::log('----------------- END ------------------------------- ', null, $logFileName);		
+		Mage::log('----------------- END ------------------------------- ', null, $logFileName, true);		
 	}
 	
 	/* Redirection URL Action */	
@@ -324,7 +324,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		
 		$logFileName = 'magentoorder.log';
 		
-		Mage::log('----------------- START ------------------------------- ', null, $logFileName);	
+		Mage::log('----------------- START ------------------------------- ', null, $logFileName, true);	
 		
 		$quote = $session->getQuote();
 		$quoteId = $quote->getEntityId();
@@ -463,12 +463,12 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 						$storeId = $customer->getSendemailStoreId();
 						$customer->sendNewAccountEmail('registered', '', $storeId);
 						
-						Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName);
+						Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName, true);
 						
 					} catch (Mage_Core_Exception $e) {						
-						Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName);
+						Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName, true);
 					} catch (Exception $e) {
-						Mage::log('Cannot add customer for  '.$email, null, $logFileName);
+						Mage::log('Cannot add customer for  '.$email, null, $logFileName, true);
 					} 
 				}
 				
@@ -596,7 +596,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$session->unsReference();
 				
 				 // Log order created message
-				Mage::log('Order created with increment id: '.$incrementId, null, $logFileName);						
+				Mage::log('Order created with increment id: '.$incrementId, null, $logFileName, true);						
 				$result['success'] = true;
 				$result['error']   = false;
 				
@@ -668,7 +668,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 					$result['success'] = false;
 					$result['error'] = true;
 					$result['error_messages'] = $e->getMessage();    
-					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ". Mage::helper('core')->jsonEncode($result) . "\n" . $e->getTraceAsString(), null, $logFileName);		
+					Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ". Mage::helper('core')->jsonEncode($result) . "\n" . $e->getTraceAsString(), null, $logFileName, true);		
 					//Mage::app()->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 					$this->loadLayout();
 					$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
@@ -684,7 +684,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		} 
 		
 		} else {
-			Mage::log('Order is already generated.', null, $logFileName);		
+			Mage::log('Order is already generated.', null, $logFileName, true);		
 			$this->loadLayout();   
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){
@@ -693,7 +693,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$this->renderLayout();
 		}
 
-		Mage::log('----------------- END ------------------------------- ', null, $logFileName);		
+		Mage::log('----------------- END ------------------------------- ', null, $logFileName, true);		
 	}
 	
 	/* Notification URL Action */
@@ -770,7 +770,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 		
 		$logFileName = 'magentoorder.log';
 		
-		Mage::log('----------------- START ------------------------------- ', null, $logFileName);	
+		Mage::log('----------------- START ------------------------------- ', null, $logFileName, true);	
 		
 		if(isset($orderData['error'])){
 			$session->addError($orderData['error']['message']);
@@ -897,12 +897,12 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				$storeId = $customer->getSendemailStoreId();
 				$customer->sendNewAccountEmail('registered', '', $storeId);
 				
-				Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName);
+				Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName, true);
 				
 			} catch (Mage_Core_Exception $e) {						
-				Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName);
+				Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName, true);
 			} catch (Exception $e) {
-				Mage::log('Cannot add customer for  '.$email, null, $logFileName);
+				Mage::log('Cannot add customer for  '.$email, null, $logFileName, true);
 			} 
 		}
 		$quote->assignCustomer($customer);
@@ -953,7 +953,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			Mage::getSingleton('checkout/cart')->truncate()->save();
 			$session->unsBusinessPrivateId();
 			$session->unsReference();
-			Mage::log('Order created with increment id: '.$incrementId, null, $logFileName);						
+			Mage::log('Order created with increment id: '.$incrementId, null, $logFileName, true);						
 			$result['success'] = true;
 			$result['error']   = false;
 			$order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
@@ -979,7 +979,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$result['success'] = false;
 			$result['error'] = true;
 			$result['error_messages'] = $e->getMessage();    
-			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);
+			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ."Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName, true);
 			$this->loadLayout();
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){
@@ -991,14 +991,14 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			}
 			$this->renderLayout();					
 		}
-		Mage::log('----------------- END ------------------------------- ', null, $logFileName);		
+		Mage::log('----------------- END ------------------------------- ', null, $logFileName, true);		
 	}
 	
 	public function createB2COrder($quote, $orderData, $privateId, $orderId){
 		$logFileName = 'magentoorder.log';
 		
 		$session = Mage::getSingleton('checkout/session');
-		Mage::log('----------------- START ------------------------------- ', null, $logFileName);	
+		Mage::log('----------------- START ------------------------------- ', null, $logFileName, true);	
 		
 		if(isset($orderData['error'])){
 			$session->addError($orderData['error']['message']);
@@ -1111,13 +1111,13 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 				// send new account email to customer
 				$storeId = $customer->getSendemailStoreId();
 				$customer->sendNewAccountEmail('registered', '', $storeId);
-				Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName);
+				Mage::log('Customer with email '.$email.' is successfully created.', null, $logFileName, true);
 			} 
 			catch (Mage_Core_Exception $e) {						
-				Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName);
+				Mage::log('Cannot add customer for  '.$e->getMessage(), null, $logFileName, true);
 			} 
 			catch (Exception $e) {
-				Mage::log('Cannot add customer for  '.$email, null, $logFileName);
+				Mage::log('Cannot add customer for  '.$email, null, $logFileName, true);
 			}
 		}
 		// Assign Customer To Sales Order Quote
@@ -1183,7 +1183,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			Mage::getSingleton('checkout/session')->clear();
 			Mage::getSingleton('checkout/cart')->truncate()->save();
 			
-			Mage::log('Order created with increment id: '.$incrementId, null, $logFileName);						
+			Mage::log('Order created with increment id: '.$incrementId, null, $logFileName, true);						
 			$result['success'] = true;
 			$result['error']   = false;
 			
@@ -1246,7 +1246,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$result['success'] = false;
 			$result['error'] = true;
 			$result['error_messages'] = $e->getMessage();    
-			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName);
+			Mage::log('Order creation is failed for invoice no '.$orderDetails['purchase']['purchaseIdentifier'] ." Error is --> ".Mage::helper('core')->jsonEncode($result), null, $logFileName, true);
 			$this->loadLayout();
 			$block = Mage::app()->getLayout()->getBlock('collectorbank_success');
 			if ($block){
@@ -1259,7 +1259,7 @@ class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_
 			$this->renderLayout();					
 		} 			
 		
-		Mage::log('----------------- END ------------------------------- ', null, $logFileName);
+		Mage::log('----------------- END ------------------------------- ', null, $logFileName, true);
 	}
 
 	public function getResp($privId, $btype){

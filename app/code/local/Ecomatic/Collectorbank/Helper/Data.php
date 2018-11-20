@@ -378,16 +378,24 @@ class Ecomatic_Collectorbank_Helper_Data extends Mage_Core_Helper_Abstract
         );
     }
 
-    public function guessCustomerType(Mage_Customer_Model_Address_Abstract $address) {
-        if($address->getCompany()) {
-            return "company";
+    public function guessCustomerType(Mage_Customer_Model_Address_Abstract $address)
+    {
+        // if($address->getCompany()) {
+        //     return "company";
+        // }
+        // return "private";
+
+        if (Mage::helper('likipe_company/company')->isPrivateCompany()) {
+            return 'private';
         }
-        return "private";
+
+        return 'company';
     }
 
     public function address(Mage_Customer_Model_Address_Abstract $address) {
         // For company customers
-        if($address->getCompany()) {
+        // if($address->getCompany()) {
+        if (!Mage::helper('likipe_company/company')->isPrivateCompany()) {
             return array(
                 'CompanyName' => $address->getCompany(),
                 'Address1' => $address->getStreetFull(),

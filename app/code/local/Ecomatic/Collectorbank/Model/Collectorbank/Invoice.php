@@ -58,7 +58,12 @@ class Ecomatic_Collectorbank_Model_Collectorbank_Invoice extends Mage_Payment_Mo
         else {
             $allowSeparate = $this->getConfigData('separate_address');
         }
+
         $shippingAddress = Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress();
+        // Mage::log($isCompany, null, "magentoorder.log", true);
+        // Mage::log($allowSeparate, null, "magentoorder.log", true);
+        // Mage::log(Mage::getSingleton('checkout/session')->getQuote()->getId(), null, "magentoorder.log", true);
+        // Mage::log($shippingAddress->getdata('same_as_billing'), null, "magentoorder.log", true);
 
         if((!($shippingAddress->getdata('same_as_billing') == 1) && !$allowSeparate && !$this->isAdmin()) ||
            (!$allowSeparate && $this->isAdmin() && !$this->validShippingAddressInAdmin())) {
