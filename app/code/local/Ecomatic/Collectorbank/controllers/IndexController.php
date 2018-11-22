@@ -1,6 +1,22 @@
 <?php
 class Ecomatic_Collectorbank_IndexController extends Mage_Core_Controller_Front_Action{
 	
+	public function postDispatch()
+    {
+		/**
+		 * Don't allow execute collector checkouts actions when module is disabled
+		 * 
+		 * @todo `preDispatch()` is more appropriate for this, but at this stage
+		 * Mage::helper('customer')->isLoggedIn() return FALSE even for logged in customers...
+		 */
+		if (!Mage::helper('collectorbank')->isActive()) {
+			$this->_redirect('/');
+		}
+
+        parent::postDispatch();
+        return $this;
+    }
+
 	public function indexAction(){
 		$cart = Mage::getSingleton('checkout/cart');
 		$messages = array();

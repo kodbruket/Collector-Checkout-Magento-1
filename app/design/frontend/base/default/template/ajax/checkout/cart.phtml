@@ -104,18 +104,29 @@
 		var image = "<?php echo $this->getSkinUrl('images/collectorbank_ajax/ajax_loader.gif'); ?>";
 
 		var iframeLoaded = false;
-		jQuery(document).ready(function() {
-			<?php if (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 2) { ?>
-			jQuery("#businesstypes a").click(function(e) {
-				e.preventDefault();
-				var ctype = jQuery(this).attr('id');
-				//      showcartloading();
-				setCtype(ctype);
-			});
+		jQuery(document).ready(function() {	
+			<?php if (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 2) {
+				if (Mage::getStoreConfig('ecomatic_collectorbank/general/only_unlogged_user')) {
+					if (Mage::helper('consumerflow')->isEnabled()) {
+						// without setTimeout I end up with infinite loop of calls `setCtype()`
+						echo sprintf('setTimeout(function() {setCtype("%s");}, 100);', Mage::helper('consumerflow')->isPrivateMode() ? 'b2c' : 'b2b');
+					}  else {
+						// without setTimeout I end up with infinite loop of calls `setCtype()`
+						echo 'setTimeout(function() {setCtype("b2b");}, 100);';
+					}
+				}
+			?>
+
+				jQuery("#businesstypes a").click(function(e) {
+					e.preventDefault();				
+					var ctype = jQuery(this).attr('id');
+					//      showcartloading();
+					setCtype(ctype);
+				});
 			<?php } elseif (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 3) { ?>
-			setCtype('b2b');
+				setCtype('b2b');
 			<?php } else { ?>
-			setCtype('b2c');
+				setCtype('b2c');
 			<?php } ?>
 		});
 		function setCtype(ctype) {

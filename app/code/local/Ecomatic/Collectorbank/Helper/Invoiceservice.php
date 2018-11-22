@@ -79,6 +79,13 @@ class Ecomatic_Collectorbank_Helper_Invoiceservice extends Ecomatic_Collectorban
         //     return "company";
         // }
         // return "private";
+        if (Mage::getStoreConfig('ecomatic_collectorbank/general/only_unlogged_user')) {
+            if (Mage::helper('consumerflow')->isEnabled()) {
+                return Mage::helper('consumerflow')->isPrivateMode() ? 'private' : 'company';
+            }    
+
+            return 'company';
+        }
 
         if (Mage::helper('likipe_company/company')->isPrivateCompany()) {
             return 'private';
@@ -90,7 +97,7 @@ class Ecomatic_Collectorbank_Helper_Invoiceservice extends Ecomatic_Collectorban
     public function address(Mage_Customer_Model_Address_Abstract $address) {
         // For company customers
         // if($address->getCompany()) {
-        if (!Mage::helper('likipe_company/company')->isPrivateCompany()) {
+        if (!$this->guessCustomerType() === 'company') {
             return array(
                 'CompanyName' => $address->getCompany(),
                 'Address1' => $address->getStreetFull(),
