@@ -1,4 +1,6 @@
 <?php //echo "<pre>";print_r($this->getData());echo "</pre>";?>
+<?php if (Mage::helper('collectorbank')->isActive()) { ?>
+
 <?php if ($this->getCode() == 111){ ?>
 	<?php echo $this->getMessagesBlock()->toHtml() ?>
 	<p><?php echo $this->__('Please click to continue for more shopping!') ?></p>
@@ -55,4 +57,4 @@
 	<p><?php echo $this->__('There are some problem in order request. Please keep your invoice No # is: %s.', $this->getInvoiceNo()) ?></p>
 
 <?php } ?>
-
+<?php } ?>
