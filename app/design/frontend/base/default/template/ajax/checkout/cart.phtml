@@ -3,7 +3,7 @@
         <div class="page-title title-buttons">
             <h1><?php echo $this->__('Shopping Cart') ?></h1>
 			<?php if (Mage::getStoreConfig('ecomatic_collectorbank/general/customer_type') == 2) { ?>
-				<div id="businesstypes" style="float:right;">
+				<div id="businesstypes" style="float:right; display:none;">
 					<a class="btype active" id="b2c"><?php echo $this->__('Privat');?></a> | <a class="btype inactive" id="b2b"><?php echo $this->__('Företag');?></a>
 				</div>
 			<?php } ?>
