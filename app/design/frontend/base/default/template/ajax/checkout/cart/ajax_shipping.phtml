@@ -76,12 +76,12 @@
                                 <?php echo $this->escapeHtml($_rate->getErrorMessage()) ?>
                            <?php else: ?>
 								<label class="carrier-method">
-									<input onclick="estimateUpdate('<?php echo $estimateupdate_url; ?>')" id="estimate_method" name="estimate_method" type="radio" value="<?php echo $this->escapeHtml($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio" />
+									<input onclick="estimateUpdate('<?php echo $estimateupdate_url; ?>')" class="estimate_method" name="estimate_method" type="radio" value="<?php echo $this->escapeHtml($_rate->getCode()) ?>" id="s_method_<?php echo $_rate->getCode() ?>"<?php if($_rate->getCode()===$this->getAddressShippingMethod()) echo ' checked="checked"' ?> class="radio" />
                                 <span style="padding-top:1px;">
 								<?php if ($first){
 									$first = false;
 								}?>
-                                <?php echo $this->escapeHtml($_rate->getMethodTitle()) ?>
+                                <span class="method-text"><?php echo $this->escapeHtml($_rate->getMethodTitle()) ?></span>
 								
                                 <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                                 <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
