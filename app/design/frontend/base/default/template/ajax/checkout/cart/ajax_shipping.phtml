@@ -81,7 +81,7 @@
 								<?php if ($first){
 									$first = false;
 								}?>
-                                <span class="method-text"><?php echo $this->escapeHtml($_rate->getMethodTitle()) ?></span>
+                                <span class="price-title"><?php echo $this->escapeHtml($_rate->getMethodTitle()) ?></span>
 								
                                 <?php $_excl = $this->getShippingPrice($_rate->getPrice(), $this->helper('tax')->displayShippingPriceIncludingTax()); ?>
                                 <?php $_incl = $this->getShippingPrice($_rate->getPrice(), true); ?>
