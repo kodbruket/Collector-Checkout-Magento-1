@@ -44,16 +44,15 @@
                 <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
                     <thead>
                         <tr>
-                            <th rowspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
-                            <th rowspan="<?php echo $mergedCells; ?>">&nbsp;</th>                          
-                            <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
-                            <th class="a-center" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Price') ?></th>
-                           
+                            <th><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                            <th>&nbsp;</th>                          
+                            <th class="a-center"><?php echo $this->__('Qty') ?></th>
+                            <th class="a-right" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Price') ?></th>
                         </tr>
                         <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
                         <tr>
                             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
-                            <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                            <th colspan="<?php echo $mergedCells; ?>"></th>
                             <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
                             <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
                         </tr>
